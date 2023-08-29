@@ -1,5 +1,6 @@
 package com.app.onlinebookstore.repository.impl;
 
+import com.app.onlinebookstore.exception.DataProcessingException;
 import com.app.onlinebookstore.model.Book;
 import com.app.onlinebookstore.repository.BookRepository;
 import java.util.List;
@@ -32,7 +33,7 @@ public class BookRepositoryImpl implements BookRepository {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't persist new book: " + book, e);
+            throw new DataProcessingException("Can't persist new book: " + book, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -45,6 +46,8 @@ public class BookRepositoryImpl implements BookRepository {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("FROM Book", Book.class)
                     .getResultList();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't find books from the database", e);
         }
     }
 }
