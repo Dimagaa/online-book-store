@@ -5,7 +5,7 @@ import com.app.onlinebookstore.dto.CreateBookRequestDto;
 import com.app.onlinebookstore.exception.EntityNotFoundException;
 import com.app.onlinebookstore.mapper.BookMapper;
 import com.app.onlinebookstore.model.Book;
-import com.app.onlinebookstore.repository.BookRepository;
+import com.app.onlinebookstore.repository.book.BookRepository;
 import com.app.onlinebookstore.service.BookService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,4 +38,17 @@ public class BookServiceImpl implements BookService {
                 .map(bookMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Can't find book with id: " + id));
     }
+
+    @Override
+    public BookDto updateById(Long id, CreateBookRequestDto bookRequestDto) {
+        Book book = bookMapper.toModel(bookRequestDto);
+        book.setId(id);
+        return bookMapper.toDto(bookRepository.save(book));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        bookRepository.deleteById(id);
+    }
+
 }
