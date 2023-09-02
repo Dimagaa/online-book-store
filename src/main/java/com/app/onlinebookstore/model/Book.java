@@ -42,7 +42,7 @@ public class Book {
                + ", title='" + title + '\''
                + ", author='" + author + '\''
                + ", isbn='" + isbn + '\''
-               + ", price=" + price
+               + ", isbn=" + price
                + ", description='" + description + '\''
                + ", coverImage='" + coverImage + '\''
                + '}';

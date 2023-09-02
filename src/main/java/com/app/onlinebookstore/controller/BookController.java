@@ -1,6 +1,7 @@
 package com.app.onlinebookstore.controller;
 
 import com.app.onlinebookstore.dto.BookDto;
+import com.app.onlinebookstore.dto.BookSearchParameters;
 import com.app.onlinebookstore.dto.CreateBookRequestDto;
 import com.app.onlinebookstore.service.BookService;
 import java.util.List;
@@ -25,7 +26,7 @@ public class BookController {
         return bookService.findAll();
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     public BookDto getBookById(@PathVariable Long id) {
         return bookService.getById(id);
     }
@@ -35,14 +36,19 @@ public class BookController {
         return bookService.save(bookRequestDto);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping("/{id}")
     public BookDto updateBook(@PathVariable Long id,
                               @RequestBody CreateBookRequestDto bookRequestDto) {
         return bookService.updateById(id, bookRequestDto);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     public void deleteBookById(@PathVariable Long id) {
         bookService.deleteById(id);
+    }
+
+    @GetMapping("/search")
+    public List<BookDto> searchBooks(BookSearchParameters searchParameters) {
+        return bookService.search(searchParameters);
     }
 }
