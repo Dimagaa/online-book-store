@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+        id: alter_books_table
+        author: Dmytro Martyshchuk
+        changes:
+          - addDefaultValue:
+              tableName: books
+              columnName: is_deleted
+              defaultValueBoolean: false
+          - modifyDataType:
+              tableName: books
+              columnName: price
+              newDataType: DECIMAL(10, 2)
