@@ -6,6 +6,7 @@ import com.app.onlinebookstore.dto.CreateBookRequestDto;
 import com.app.onlinebookstore.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Books API", description = "Look at and search for books")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/api/books")
+@RequestMapping(value = "/books")
 public class BookController {
     private final BookService bookService;
 
@@ -41,7 +42,7 @@ public class BookController {
             description = "Retrieve a book by its unique identifier"
     )
     @GetMapping("/{id}")
-    public BookDto getBookById(@PathVariable Long id) {
+    public BookDto getById(@PathVariable Long id) {
         return bookService.getById(id);
     }
 
@@ -50,7 +51,7 @@ public class BookController {
             description = "Add a new book to the database"
     )
     @PostMapping
-    public BookDto createBook(@RequestBody CreateBookRequestDto bookRequestDto) {
+    public BookDto create(@RequestBody @Valid CreateBookRequestDto bookRequestDto) {
         return bookService.save(bookRequestDto);
     }
 
@@ -59,7 +60,7 @@ public class BookController {
             description = "Modify an existing book using its unique identifier"
     )
     @PutMapping("/{id}")
-    public BookDto updateBook(@PathVariable Long id,
+    public BookDto update(@PathVariable Long id,
                               @RequestBody CreateBookRequestDto bookRequestDto) {
         return bookService.update(id, bookRequestDto);
     }
@@ -70,7 +71,7 @@ public class BookController {
             summary = "Delete book by ID",
             description = "Remove a book from the collection by its unique identifier"
     )
-    public void deleteBookById(@PathVariable Long id) {
+    public void deleteById(@PathVariable Long id) {
         bookService.deleteById(id);
     }
 
@@ -79,7 +80,7 @@ public class BookController {
             summary = "Search books",
             description = "Search for books based on specific criteria using pagination"
     )
-    public List<BookDto> searchBooks(BookSearchParameters searchParameters, Pageable pageable) {
+    public List<BookDto> search(BookSearchParameters searchParameters, Pageable pageable) {
         return bookService.search(searchParameters, pageable);
     }
 }
