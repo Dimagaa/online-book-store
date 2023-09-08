@@ -4,6 +4,7 @@ import com.app.onlinebookstore.dto.BookDto;
 import com.app.onlinebookstore.dto.BookSearchParameters;
 import com.app.onlinebookstore.dto.CreateBookRequestDto;
 import com.app.onlinebookstore.service.BookService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/api/books")
+@RequestMapping(value = "/books")
 public class BookController {
     private final BookService bookService;
 
@@ -27,28 +28,28 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public BookDto getBookById(@PathVariable Long id) {
+    public BookDto getById(@PathVariable Long id) {
         return bookService.getById(id);
     }
 
     @PostMapping
-    public BookDto createBook(@RequestBody CreateBookRequestDto bookRequestDto) {
+    public BookDto create(@RequestBody @Valid CreateBookRequestDto bookRequestDto) {
         return bookService.save(bookRequestDto);
     }
 
     @PutMapping("/{id}")
-    public BookDto updateBook(@PathVariable Long id,
-                              @RequestBody CreateBookRequestDto bookRequestDto) {
+    public BookDto update(@PathVariable Long id,
+                              @RequestBody @Valid CreateBookRequestDto bookRequestDto) {
         return bookService.update(id, bookRequestDto);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBookById(@PathVariable Long id) {
+    public void deleteById(@PathVariable Long id) {
         bookService.deleteById(id);
     }
 
     @GetMapping("/search")
-    public List<BookDto> searchBooks(BookSearchParameters searchParameters) {
+    public List<BookDto> search(BookSearchParameters searchParameters) {
         return bookService.search(searchParameters);
     }
 }
