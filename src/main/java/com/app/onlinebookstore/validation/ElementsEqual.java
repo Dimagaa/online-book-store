@@ -21,7 +21,7 @@ public @interface ElementsEqual {
 
     @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
     @Retention(RetentionPolicy.RUNTIME)
-    public @interface List {
+    @interface List {
         ElementsEqual[] value();
     }
 }

@@ -1,6 +1,5 @@
 package com.app.onlinebookstore.exception;
 
-import com.app.onlinebookstore.dto.ArgumentNotValidResponse;
 import java.time.LocalDateTime;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,16 +27,27 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                 .stream()
                 .map(this::getErrorMessage)
                 .toArray(String[]::new);
-        ArgumentNotValidResponse responseBody = new ArgumentNotValidResponse(
+        ErrorResponseDto responseBody = new ErrorResponseDto(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST,
                 errorMessages);
         return new ResponseEntity<>(responseBody, headers, status);
     }
 
+    @ExceptionHandler(RegistrationException.class)
+    protected ResponseEntity<Object> handleRegistrationException(
+            RegistrationException exception) {
+        ErrorResponseDto response = new ErrorResponseDto(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST,
+                new String[]{exception.getMessage()}
+        );
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleAllErrors(Exception exception) {
-        ArgumentNotValidResponse response = new ArgumentNotValidResponse(
+        ErrorResponseDto response = new ErrorResponseDto(
                 LocalDateTime.now(),
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 new String[]{exception.getMessage()}
