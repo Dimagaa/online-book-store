@@ -1,7 +1,7 @@
 package com.app.onlinebookstore.service.impl;
 
-import com.app.onlinebookstore.dto.user.RegisterUserDto;
 import com.app.onlinebookstore.dto.user.UserDto;
+import com.app.onlinebookstore.dto.user.UserRegisterRequestDto;
 import com.app.onlinebookstore.exception.RegistrationException;
 import com.app.onlinebookstore.mapper.UserMapper;
 import com.app.onlinebookstore.model.Role;
@@ -23,11 +23,12 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public UserDto register(RegisterUserDto registerUserDto) throws RegistrationException {
-        if (userRepository.findByEmail(registerUserDto.email()).isPresent()) {
+    public UserDto register(UserRegisterRequestDto userRegisterRequestDto)
+            throws RegistrationException {
+        if (userRepository.findByEmail(userRegisterRequestDto.email()).isPresent()) {
             throw new RegistrationException("Unable to complete registration");
         }
-        User user = userMapper.toModel(registerUserDto);
+        User user = userMapper.toModel(userRegisterRequestDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role role = roleRepository.getRoleByName(Role.RoleName.ROLE_USER);
         user.setRoles(Set.of(role));

@@ -10,6 +10,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -32,6 +33,16 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                 HttpStatus.BAD_REQUEST,
                 errorMessages);
         return new ResponseEntity<>(responseBody, headers, status);
+    }
+
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<Object> handleAllErrors(Exception exception) {
+        ArgumentNotValidResponse response = new ArgumentNotValidResponse(
+                LocalDateTime.now(),
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                new String[]{exception.getMessage()}
+        );
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private String getErrorMessage(ObjectError error) {

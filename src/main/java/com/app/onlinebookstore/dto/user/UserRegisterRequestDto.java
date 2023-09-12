@@ -9,22 +9,22 @@ import org.hibernate.validator.constraints.Length;
 @ElementsEqual(firstFieldName = "password",
         secondFieldName = "repeatPassword",
         message = "Passwords don't match")
-public record RegisterUserDto(@NotBlank
+public record UserRegisterRequestDto(@NotBlank
                               @Email
                               String email,
-                              @NotBlank
+                                     @NotBlank
                               @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{6,}$",
                                       message = "Minimum eight characters, at least one uppercase"
                                               + " letter, one lowercase letter and one number")
                               String password,
-                              @NotBlank
+                                     @NotBlank
                               String repeatPassword,
-                              @NotBlank
+                                     @NotBlank
                               @Length(min = 1, max = 255)
                               String firstName,
-                              @NotBlank
+                                     @NotBlank
                               @Length(min = 1, max = 255)
                               String lastName,
-                              @Length(min = 1, max = 255)
+                                     @Length(min = 1, max = 255)
                               String shippingAddress) {
 }
