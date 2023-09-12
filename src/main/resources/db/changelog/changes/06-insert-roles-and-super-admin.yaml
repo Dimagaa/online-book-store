@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-roles
+      author: Dmytro Martyshchuk
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: ROLE_USER
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: ROLE_ADMIN
+  - changeSet:
+      id: insert-super-admin
+      author: Dmytro Martyshchuk
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: sAdmin@book.store
+              - column:
+                  name: password
+                  value: $2a$10$eNDxAZLdjj7A42/3t6t/lu9YigNljFK2bk9HSabaM3wGEYMv.6dYK
+              - column:
+                  name: first_name
+                  value: Super
+              - column:
+                  name: last_name
+                  value: Admin
+        - insert:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  valueComputed: (SELECT id FROM users WHERE email = 'sAdmin@book.store')
+              - column:
+                  name: role_id
+                  valueComputed: (SELECT id FROM roles WHERE name = 'ROLE_ADMIN')
