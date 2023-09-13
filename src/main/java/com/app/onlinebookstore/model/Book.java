@@ -5,9 +5,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
+import java.util.Set;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.builder.ToStringExclude;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -32,4 +38,11 @@ public class Book {
     private String coverImage;
     @Column(nullable = false)
     private boolean isDeleted;
+    @ToStringExclude
+    @EqualsAndHashCode.Exclude
+    @ManyToMany
+    @JoinTable(name = "books_categories",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories;
 }
