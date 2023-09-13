@@ -12,6 +12,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +35,7 @@ public class CategoryController {
             summary = "Create a new category",
             description = "Create a new category with the provided data"
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public CategoryDto create(@RequestBody @Valid CategoryCreateRequestDto request) {
         return categoryService.save(request);
@@ -43,15 +45,17 @@ public class CategoryController {
             summary = "Get all categories",
             description = "Retrieve a list of all categories"
     )
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping
-    public List<CategoryDto> getAll() {
-        return categoryService.findAll();
+    public List<CategoryDto> getAll(Pageable pageable) {
+        return categoryService.findAll(pageable);
     }
 
     @Operation(
             summary = "Get a category by ID",
             description = "Retrieve a category by its unique identifier"
     )
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/{id}")
     public CategoryDto getById(@PathVariable Long id) {
         return categoryService.getById(id);
@@ -61,9 +65,10 @@ public class CategoryController {
             summary = "Update a category by ID",
             description = "Update an existing category with the provided data"
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public CategoryDto update(@ PathVariable Long id,
-                              @RequestBody @Valid CategoryDto categoryDto) {
+    public CategoryDto update(@PathVariable Long id,
+                              @RequestBody @Valid CategoryCreateRequestDto categoryDto) {
         return categoryService.update(id, categoryDto);
     }
 
@@ -71,6 +76,7 @@ public class CategoryController {
             summary = "Delete a category by ID",
             description = "Delete a category by its unique identifier"
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
@@ -80,10 +86,12 @@ public class CategoryController {
     @Operation(
             summary = "Get books by category ID",
             description = "Retrieve a list of books belonging to"
-            + " a category by its unique identifier"
+                    + " a category by its unique identifier"
     )
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/{id}/books")
-    public List<BookWithoutCategoryIdsDto> getBooksByCategoryId(@PathVariable Long id, Pageable pageable) {
+    public List<BookWithoutCategoryIdsDto> getBooksByCategoryId(@PathVariable Long id,
+                                                                Pageable pageable) {
         return bookService.getByCategoryId(id, pageable);
     }
 }
