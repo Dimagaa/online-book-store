@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 @Mapper(config = MapperConfig.class)
 public interface BookMapper {
@@ -21,6 +22,11 @@ public interface BookMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "deleted", ignore = true)
     Book toModel(CreateBookRequestDto requestDto);
+
+    @Named("bookFromId")
+    default Book bookFromId(Long id) {
+        return new Book(id);
+    }
 
     default Set<Long> mapCategoryToIds(Set<Category> categories) {
         return categories.stream()
