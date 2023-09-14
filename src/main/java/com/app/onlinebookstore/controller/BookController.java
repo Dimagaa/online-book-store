@@ -2,6 +2,7 @@ package com.app.onlinebookstore.controller;
 
 import com.app.onlinebookstore.dto.book.BookDto;
 import com.app.onlinebookstore.dto.book.BookSearchParameters;
+import com.app.onlinebookstore.dto.book.BookWithoutCategoryIdsDto;
 import com.app.onlinebookstore.dto.book.CreateBookRequestDto;
 import com.app.onlinebookstore.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -87,7 +88,8 @@ public class BookController {
     )
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/search")
-    public List<BookDto> search(BookSearchParameters searchParameters, Pageable pageable) {
+    public List<BookWithoutCategoryIdsDto> search(BookSearchParameters searchParameters,
+                                                  Pageable pageable) {
         return bookService.search(searchParameters, pageable);
     }
 }
