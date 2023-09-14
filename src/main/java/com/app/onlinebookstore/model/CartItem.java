@@ -10,11 +10,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Data
+@NoArgsConstructor
 @Entity
 @SQLDelete(sql = "UPDATE cart_items SET is_deleted = true WHERE id = ?")
 @Where(clause = "is_deleted = false")
@@ -34,7 +36,12 @@ public class CartItem {
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
     @Column(nullable = false)
-    private Integer quantity;
+    private int quantity;
     @Column(nullable = false)
     private boolean isDeleted;
+
+    public CartItem(ShoppingCart shoppingCart, Book book) {
+        this.shoppingCart = shoppingCart;
+        this.book = book;
+    }
 }
