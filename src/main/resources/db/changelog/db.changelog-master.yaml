@@ -13,3 +13,7 @@ databaseChangeLog:
       file: db/changelog/changes/06-insert-roles-and-super-admin.yaml
   - include:
       file: db/changelog/changes/07-create-categories-table.yaml
+  - include:
+      file: db/changelog/changes/08-create-shopping_carts-table.yaml
+  - include:
+      file: db/changelog/changes/09-create-cart-items-table.yaml
