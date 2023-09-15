@@ -40,8 +40,9 @@ public class CartItem {
     @Column(nullable = false)
     private boolean isDeleted;
 
-    public CartItem(ShoppingCart shoppingCart, Book book) {
+    public CartItem(ShoppingCart shoppingCart, Book book, int quantity) {
         this.shoppingCart = shoppingCart;
         this.book = book;
+        this.quantity = quantity;
     }
 }
