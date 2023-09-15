@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import org.apache.commons.lang3.builder.ToStringExclude;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,6 +31,8 @@ public class User implements UserDetails {
     private Long id;
     @Column(nullable = false, unique = true)
     private String email;
+    @ToStringExclude
+    @EqualsAndHashCode.Exclude
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
@@ -38,7 +40,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String lastName;
     private String shippingAddress;
-    @ToString.Exclude
+    @ToStringExclude
     @EqualsAndHashCode.Exclude
     @ManyToMany()
     @JoinTable(name = "users_roles",
