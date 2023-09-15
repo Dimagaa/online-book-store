@@ -7,11 +7,9 @@ import com.app.onlinebookstore.dto.shoppingcart.ShoppingCartDto;
 import com.app.onlinebookstore.exception.EntityNotFoundException;
 import com.app.onlinebookstore.mapper.CartItemMapper;
 import com.app.onlinebookstore.mapper.ShoppingCartMapper;
-import com.app.onlinebookstore.model.Book;
 import com.app.onlinebookstore.model.CartItem;
 import com.app.onlinebookstore.model.ShoppingCart;
 import com.app.onlinebookstore.model.User;
-import com.app.onlinebookstore.repository.book.BookRepository;
 import com.app.onlinebookstore.repository.shoppingcart.CartItemRepository;
 import com.app.onlinebookstore.repository.shoppingcart.ShoppingCartRepository;
 import com.app.onlinebookstore.service.ShoppingCartService;
@@ -25,7 +23,6 @@ import org.springframework.stereotype.Service;
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final ShoppingCartRepository shoppingCartRepository;
     private final CartItemRepository cartItemRepository;
-    private final BookRepository bookRepository;
     private final UserService userService;
     private final ShoppingCartMapper shoppingCartMapper;
     private final CartItemMapper cartItemMapper;
@@ -45,16 +42,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Shopping cart was not found for the current user"
                 ));
-        Book book = bookRepository.findById(request.bookId())
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Can't find book by id: " + request.bookId()
-                ));
-        CartItem cartItem = shoppingCart.getCartItems()
-                .stream()
-                .filter(item -> item.getBook().equals(book))
-                .findFirst()
-                .orElse(new CartItem(shoppingCart, book));
-        cartItem.setQuantity(cartItem.getQuantity() + request.quantity());
+        CartItem cartItem = cartItemMapper.toModel(request, shoppingCart);
         return cartItemMapper.toDto(cartItemRepository.save(cartItem));
     }
 

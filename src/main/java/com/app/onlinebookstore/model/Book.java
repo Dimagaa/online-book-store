@@ -15,7 +15,7 @@ import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.builder.ToStringExclude;
+import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -41,7 +41,7 @@ public class Book {
     private String coverImage;
     @Column(nullable = false)
     private boolean isDeleted;
-    @ToStringExclude
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToMany
     @JoinTable(name = "books_categories",
@@ -50,5 +50,6 @@ public class Book {
     private Set<Category> categories = new HashSet<>();
 
     public Book(Long id) {
+        this.id = id;
     }
 }
