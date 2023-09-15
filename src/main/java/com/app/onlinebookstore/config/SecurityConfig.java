@@ -24,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
     private static final String AUTHORIZED_URL = "/auth/**";
+    private static final String ERROR_PAGE_URL = "/error";
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -39,7 +40,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers(AUTHORIZED_URL)
+                                .requestMatchers(AUTHORIZED_URL, ERROR_PAGE_URL)
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
