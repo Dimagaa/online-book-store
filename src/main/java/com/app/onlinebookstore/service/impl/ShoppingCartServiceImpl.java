@@ -19,6 +19,7 @@ import com.app.onlinebookstore.service.UserService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -32,19 +33,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCartDto getShoppingCart() {
-        return findShoppingCartByAuthenticatedUser()
-                .map(shoppingCartMapper::toDto)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Shopping cart was not found for the current user"
-                ));
+        return shoppingCartMapper.toDto(findShoppingCartByAuthenticatedUser()
+                .orElseGet(this::createNewShoppingCart));
     }
 
     @Override
+    @Transactional
     public CartItemDto addCartItem(CartItemCreateRequestDto request) {
         ShoppingCart shoppingCart = findShoppingCartByAuthenticatedUser()
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Shopping cart was not found for the current user"
-                ));
+                .orElseGet(this::createNewShoppingCart);
         CartItem cartItem = shoppingCart.getCartItems().stream()
                 .filter(item -> request.bookId().equals(item.getBook().getId()))
                 .peek(item -> item.setQuantity(item.getQuantity() + request.quantity()))
@@ -54,6 +51,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public CartItemDto updateCartItem(Long cartItemId, CartItemUpdateRequestDto request) {
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new EntityNotFoundException(
@@ -71,6 +69,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private Optional<ShoppingCart> findShoppingCartByAuthenticatedUser() {
         User user = userService.getAuthenticatedUser();
         return shoppingCartRepository.findByUserId(user.getId());
+    }
+
+    private ShoppingCart createNewShoppingCart() {
+        User user = userService.getAuthenticatedUser();
+        return shoppingCartRepository.save(new ShoppingCart(user));
     }
 
     private CartItem createNewCartItem(ShoppingCart shoppingCart,

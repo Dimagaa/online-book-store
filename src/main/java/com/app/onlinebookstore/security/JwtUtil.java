@@ -40,7 +40,7 @@ public class JwtUtil {
             parseToken(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            logger.error("Can't parse jwt: ", e);
+            logger.warn("Expired or invalid JWT token");
         }
         return false;
     }
