@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -41,13 +43,13 @@ public class Order {
     private LocalDateTime orderDate;
     @Column(nullable = false)
     private String shippingAddress;
+    @Cascade(CascadeType.PERSIST)
     @OneToMany(mappedBy = "order")
     private Set<OrderItem> orderItems = new HashSet<>();
     @Column(nullable = false)
     private boolean isDeleted;
 
     public enum Status {
-        PLACED, CONFIRMED, SHIPPED
-
+        PENDING, COMPLETED, DELIVERED
     }
 }

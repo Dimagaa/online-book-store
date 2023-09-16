@@ -45,4 +45,3 @@ databaseChangeLog:
                   defaultValueBoolean: false
                   constraints:
                     nullable: false
-

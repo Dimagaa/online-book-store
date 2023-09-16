@@ -12,5 +12,5 @@ public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long
             LEFT JOIN FETCH i.book
             WHERE sc.user.id = :userId
             """)
-    Optional<ShoppingCart> findByUserId(Long userId);
+    Optional<ShoppingCart> findByUserIdWithCartItemsAndBooks(Long userId);
 }

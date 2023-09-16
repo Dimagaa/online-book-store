@@ -66,9 +66,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         cartItemRepository.deleteById(cartItemId);
     }
 
-    private Optional<ShoppingCart> findShoppingCartByAuthenticatedUser() {
+    public Optional<ShoppingCart> findShoppingCartByAuthenticatedUser() {
         User user = userService.getAuthenticatedUser();
-        return shoppingCartRepository.findByUserId(user.getId());
+        return shoppingCartRepository.findByUserIdWithCartItemsAndBooks(user.getId());
     }
 
     private ShoppingCart createNewShoppingCart() {
