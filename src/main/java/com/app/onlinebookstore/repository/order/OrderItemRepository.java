@@ -13,9 +13,9 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     List<OrderItem> findAllByOrderId(Long orderId, Pageable pageable);
 
     @Query("""
-    FROM OrderItem i
-    WHERE i.id = :id
-    AND i.order.id = :orderId
-    """)
+            FROM OrderItem i
+            WHERE i.id = :id
+            AND i.order.id = :orderId
+            """)
     Optional<OrderItem> findByIdAndOrderId(Long orderId, Long id);
 }
