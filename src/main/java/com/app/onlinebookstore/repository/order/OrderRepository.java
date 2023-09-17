@@ -12,11 +12,12 @@ import org.springframework.stereotype.Repository;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("""
             FROM Order o
-            LEFT JOIN FETCH o.user
+            LEFT JOIN FETCH o.user u
             LEFT JOIN FETCH o.orderItems i
             LEFT JOIN FETCH i.book
+            WHERE u.id = ?#{ principal?.id }
             """)
-    List<Order> findAllWithUserAndOrderItems(Pageable pageable);
+    List<Order> findAllForCurrentUserWithUserAndOrderItems(Pageable pageable);
 
     @Query("""
             FROM Order o

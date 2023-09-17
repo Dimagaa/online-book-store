@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
                 .findShoppingCartByAuthenticatedUser()
                 .orElseThrow(
                         () -> new EntityNotFoundException(
-                                "Can't find shopping cart for username: "
+                                "Can't find shopping cart by username: "
                                         + authenticatedUser.getUsername())
                 );
         Order order = orderMapper.toOrder(shoppingCart, request);
@@ -49,7 +49,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getHistory(Pageable pageable) {
-        return orderRepository.findAllWithUserAndOrderItems(pageable)
+        return orderRepository
+                .findAllForCurrentUserWithUserAndOrderItems(pageable)
                 .stream()
                 .map(orderMapper::toDto)
                 .toList();
@@ -67,7 +68,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderItemDto> getAllOrderItems(Long orderId, Pageable pageable) {
-        return orderItemRepository.findAllByOrderId(orderId, pageable)
+        return orderItemRepository
+                .findAllByOrderIdForCurrentUser(orderId, pageable)
                 .stream()
                 .map(orderItemMapper::toDto)
                 .toList();
@@ -75,7 +77,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderItemDto getOrderItemById(Long orderId, Long itemId) {
-        return orderItemRepository.findByIdAndOrderId(orderId, itemId)
+        return orderItemRepository
+                .findByIdAndOrderIdForCurrentUser(orderId, itemId)
                 .map(orderItemMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Can't find Order Item by id: " + itemId

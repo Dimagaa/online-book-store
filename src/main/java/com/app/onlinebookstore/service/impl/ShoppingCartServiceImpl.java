@@ -53,7 +53,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     @Transactional
     public CartItemDto updateCartItem(Long cartItemId, CartItemUpdateRequestDto request) {
-        CartItem cartItem = cartItemRepository.findById(cartItemId)
+        CartItem cartItem = cartItemRepository.findByIdForCurrentUser(cartItemId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Can't find CartItem by id: " + cartItemId
                 ));
@@ -63,12 +63,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void deleteCartItem(Long cartItemId) {
+        findShoppingCartByAuthenticatedUser()
+                .stream()
+                .flatMap(cart -> cart.getCartItems().stream())
+                .filter(item -> cartItemId.equals(item.getId()))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Can't find CartItem by id: " + cartItemId
+                ));
         cartItemRepository.deleteById(cartItemId);
     }
 
+    @Override
     public Optional<ShoppingCart> findShoppingCartByAuthenticatedUser() {
-        User user = userService.getAuthenticatedUser();
-        return shoppingCartRepository.findByUserIdWithCartItemsAndBooks(user.getId());
+        return shoppingCartRepository.findForCurrentUserWithCartItemsAndBooks();
     }
 
     @Override
