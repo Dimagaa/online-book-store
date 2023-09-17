@@ -50,6 +50,6 @@ public class Order {
     private boolean isDeleted;
 
     public enum Status {
-        PENDING, COMPLETED, DELIVERED
+        PENDING, CONFIRMED, COMPLETED, DELIVERED
     }
 }

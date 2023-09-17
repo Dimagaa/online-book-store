@@ -43,6 +43,7 @@ public class OrderServiceImpl implements OrderService {
                                         + authenticatedUser.getUsername())
                 );
         Order order = orderMapper.toOrder(shoppingCart, request);
+        shoppingCartService.clear(shoppingCart);
         return orderMapper.toDto(orderRepository.save(order));
     }
 
@@ -56,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto updateStatus(Long orderId, OrderUpdateRequestDto request) {
-        Order order = orderRepository.findById(orderId)
+        Order order = orderRepository.findByIdWithItems(orderId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Can't find order by id: " + orderId
                 ));
@@ -77,7 +78,7 @@ public class OrderServiceImpl implements OrderService {
         return orderItemRepository.findByIdAndOrderId(orderId, itemId)
                 .map(orderItemMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Can't find Order item by id: " + itemId
+                        "Can't find Order Item by id: " + itemId
                 ));
     }
 }

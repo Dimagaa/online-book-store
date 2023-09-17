@@ -3,6 +3,7 @@ package com.app.onlinebookstore.mapper;
 import com.app.onlinebookstore.config.MapperConfig;
 import com.app.onlinebookstore.dto.order.OrderDto;
 import com.app.onlinebookstore.dto.order.OrderPlaceRequestDto;
+import com.app.onlinebookstore.exception.OrderProcessingException;
 import com.app.onlinebookstore.model.Order;
 import com.app.onlinebookstore.model.OrderItem;
 import com.app.onlinebookstore.model.ShoppingCart;
@@ -18,6 +19,8 @@ public interface OrderMapper {
     OrderDto toDto(Order order);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "total", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
     @Mapping(target = "status", constant = "PENDING")
     @Mapping(target = "orderDate", expression = "java(LocalDateTime.now())")
     @Mapping(target = "orderItems", source = "shoppingCart.cartItems")
@@ -29,7 +32,11 @@ public interface OrderMapper {
                 .peek(item -> item.setOrder(order))
                 .map(OrderMapper::calculateAmountForItem)
                 .reduce(BigDecimal::add)
-                .ifPresent(order::setTotal);
+                .ifPresentOrElse(order::setTotal,
+                        () -> {
+                            throw new OrderProcessingException(
+                                    "Invalid order items were provided");
+                        });
     }
 
     private static BigDecimal calculateAmountForItem(OrderItem item) {

@@ -12,8 +12,9 @@ public interface OrderItemMapper {
     @Mapping(target = "bookId", source = "book.id")
     OrderItemDto toDto(OrderItem item);
 
-    @Mapping(target = "price", source = "cartItem.book.price")
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "order", ignore = true)
     @Mapping(target = "deleted", ignore = true)
+    @Mapping(target = "price", source = "cartItem.book.price")
     OrderItem toOrderItem(CartItem cartItem);
 }
