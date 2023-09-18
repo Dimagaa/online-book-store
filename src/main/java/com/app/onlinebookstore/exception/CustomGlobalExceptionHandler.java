@@ -82,7 +82,6 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
-
     @ExceptionHandler(OrderProcessingException.class)
     protected ResponseEntity<Object> handleOrderProcessingException(Exception exception) {
         ErrorResponseDto response = new ErrorResponseDto(
