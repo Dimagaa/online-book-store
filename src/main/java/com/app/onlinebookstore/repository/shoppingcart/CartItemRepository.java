@@ -13,5 +13,4 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
             AND i.shoppingCart.user.id = ?#{ principal?.id }
             """)
     Optional<CartItem> findByIdForCurrentUser(Long cartItemId);
-
 }
