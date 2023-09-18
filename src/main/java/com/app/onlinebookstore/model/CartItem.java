@@ -33,7 +33,7 @@ public class CartItem {
     private ShoppingCart shoppingCart;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
     @Column(nullable = false)
