@@ -11,6 +11,7 @@ import com.app.onlinebookstore.repository.user.UserRepository;
 import com.app.onlinebookstore.service.UserService;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,14 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role role = roleRepository.getRoleByName(Role.RoleName.ROLE_USER);
         user.setRoles(Set.of(role));
-        return userMapper.toDto(userRepository.save(user));
+        User savedUser = userRepository.save(user);
+        return userMapper.toDto(savedUser);
+    }
+
+    @Override
+    public User getAuthenticatedUser() {
+        return (User) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
     }
 }
