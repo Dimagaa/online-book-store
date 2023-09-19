@@ -26,6 +26,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private static final String AUTHORIZED_URL = "/auth/**";
     private static final String ERROR_PAGE_URL = "/error";
+    private static final String SWAGGER_UI_URL = "/swagger-ui/index.html#";
+    private static final String SWAGGER_API_DOCS_URL = "v3/api-docs";
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -41,7 +43,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers(AUTHORIZED_URL, ERROR_PAGE_URL)
+                                .requestMatchers(AUTHORIZED_URL,
+                                        ERROR_PAGE_URL,
+                                        SWAGGER_UI_URL,
+                                        SWAGGER_API_DOCS_URL)
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
