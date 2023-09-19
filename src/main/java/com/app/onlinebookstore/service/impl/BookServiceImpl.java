@@ -4,12 +4,15 @@ import com.app.onlinebookstore.dto.book.BookDto;
 import com.app.onlinebookstore.dto.book.BookSearchParameters;
 import com.app.onlinebookstore.dto.book.BookWithoutCategoryIdsDto;
 import com.app.onlinebookstore.dto.book.CreateBookRequestDto;
+import com.app.onlinebookstore.exception.BookProcessingException;
 import com.app.onlinebookstore.exception.EntityNotFoundException;
 import com.app.onlinebookstore.mapper.BookMapper;
 import com.app.onlinebookstore.model.Book;
+import com.app.onlinebookstore.model.Category;
 import com.app.onlinebookstore.repository.book.BookRepository;
 import com.app.onlinebookstore.repository.book.BookSpecificationBuilder;
 import com.app.onlinebookstore.service.BookService;
+import com.app.onlinebookstore.service.CategoryService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +26,16 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
     private final BookSpecificationBuilder specificationBuilder;
+    private final CategoryService categoryService;
 
     @Override
     public BookDto save(CreateBookRequestDto bookRequestDto) {
         Book book = bookMapper.toModel(bookRequestDto);
+        if (bookRepository.findByIsbn(book.getIsbn()).isPresent()) {
+            throw new BookProcessingException(
+                    "Book creation failed. A book with ISBN already exists: "
+                            + book.getIsbn());
+        }
         return bookMapper.toDto(bookRepository.save(book));
     }
 

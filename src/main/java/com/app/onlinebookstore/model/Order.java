@@ -31,21 +31,28 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;
+
     @Column(nullable = false)
     private BigDecimal total;
+
     @Column(nullable = false)
     private LocalDateTime orderDate;
+
     @Column(nullable = false)
     private String shippingAddress;
+
     @Cascade(CascadeType.PERSIST)
     @OneToMany(mappedBy = "order")
     private Set<OrderItem> orderItems = new HashSet<>();
+
     @Column(nullable = false)
     private boolean isDeleted;
 

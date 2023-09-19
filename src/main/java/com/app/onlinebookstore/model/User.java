@@ -29,17 +29,22 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false, unique = true)
     private String email;
+
     @ToStringExclude
     @EqualsAndHashCode.Exclude
     @Column(nullable = false)
     private String password;
+
     @Column(nullable = false)
     private String firstName;
+
     @Column(nullable = false)
     private String lastName;
     private String shippingAddress;
+
     @ToStringExclude
     @EqualsAndHashCode.Exclude
     @ManyToMany()
@@ -47,6 +52,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+
     @Column(nullable = false)
     private boolean isDeleted;
 
