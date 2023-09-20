@@ -11,10 +11,12 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqlserver:$MYSQL_DOCKER_PORT/$MYSQL_DB
       SPRING_DATASOURCE_USERNAME: $MYSQL_USER
       SPRING_DATASOURCE_PASSWORD: $MYSQL_PASSWORD
+      JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$DEBUG_PORT
       SPRING_PROFILES_ACTIVE: $SPRING_PROFILES_ACTIVE
     ports:
       - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
       - $DEBUG_PORT
+
   mysqlserver:
     image: mysql
     restart: always
