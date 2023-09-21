@@ -7,7 +7,7 @@ databaseChangeLog:
         - sql:
             sql:
               INSERT INTO users (email, password, first_name, last_name, shipping_address)
-              VALUES ('', '$2a$10$eNDxAZLdjj7A42/3t6t/lu9YigNljFK2bk9HSabaM3wGEYMv.6dYK', 'Harry', 'Potter', '4 Privet Drive, Little Whinging, England');
+              VALUES ('harry@example.com', '$2a$10$eNDxAZLdjj7A42/3t6t/lu9YigNljFK2bk9HSabaM3wGEYMv.6dYK', 'Harry', 'Potter', '4 Privet Drive, Little Whinging, England');
 
               INSERT INTO users (email, password, first_name, last_name, shipping_address)
               VALUES ('frodo@example.com', '$2a$10$eNDxAZLdjj7A42/3t6t/lu9YigNljFK2bk9HSabaM3wGEYMv.6dYK', 'Frodo', 'Baggins', 'Bag End, Hobbiton, The Shire');
