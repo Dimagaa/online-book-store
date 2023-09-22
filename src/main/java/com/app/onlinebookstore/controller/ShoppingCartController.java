@@ -55,7 +55,7 @@ public class ShoppingCartController {
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/cart-items/{cartItemId}")
     public CartItemDto updateCartItem(@PathVariable Long cartItemId,
-                                      @RequestBody @Valid CartItemUpdateRequestDto request) {
+                               @RequestBody @Valid CartItemUpdateRequestDto request) {
         return shoppingCartService.updateCartItem(cartItemId, request);
     }
 

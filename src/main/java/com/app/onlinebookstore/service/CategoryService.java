@@ -2,7 +2,9 @@ package com.app.onlinebookstore.service;
 
 import com.app.onlinebookstore.dto.category.CategoryCreateRequestDto;
 import com.app.onlinebookstore.dto.category.CategoryDto;
+import com.app.onlinebookstore.model.Category;
 import java.util.List;
+import java.util.Set;
 import org.springframework.data.domain.Pageable;
 
 public interface CategoryService {
@@ -15,4 +17,6 @@ public interface CategoryService {
     CategoryDto update(Long id, CategoryCreateRequestDto categoryDto);
 
     void deleteById(Long id);
+
+    Set<Category> findAllById(Set<Long> categories);
 }

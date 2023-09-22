@@ -4,18 +4,24 @@ import com.app.onlinebookstore.dto.book.BookDto;
 import com.app.onlinebookstore.dto.book.BookSearchParameters;
 import com.app.onlinebookstore.dto.book.BookWithoutCategoryIdsDto;
 import com.app.onlinebookstore.dto.book.CreateBookRequestDto;
+import com.app.onlinebookstore.exception.BookProcessingException;
 import com.app.onlinebookstore.exception.EntityNotFoundException;
 import com.app.onlinebookstore.mapper.BookMapper;
 import com.app.onlinebookstore.model.Book;
+import com.app.onlinebookstore.model.Category;
 import com.app.onlinebookstore.repository.book.BookRepository;
 import com.app.onlinebookstore.repository.book.BookSpecificationBuilder;
 import com.app.onlinebookstore.service.BookService;
+import com.app.onlinebookstore.service.CategoryService;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -23,10 +29,18 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
     private final BookSpecificationBuilder specificationBuilder;
+    private final CategoryService categoryService;
 
     @Override
+    @Transactional
     public BookDto save(CreateBookRequestDto bookRequestDto) {
+        if (bookRepository.findByIsbn(bookRequestDto.isbn()).isPresent()) {
+            throw new BookProcessingException(
+                    "Book creation failed. A book with ISBN already exists: "
+                            + bookRequestDto.isbn());
+        }
         Book book = bookMapper.toModel(bookRequestDto);
+        book.setCategories(findCategoriesByIds(bookRequestDto.categories()));
         return bookMapper.toDto(bookRepository.save(book));
     }
 
@@ -46,11 +60,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public BookDto update(Long id, CreateBookRequestDto bookRequestDto) {
         bookRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Can't update: Not found book with id: " + id));
         Book book = bookMapper.toModel(bookRequestDto);
         book.setId(id);
+        book.setCategories(findCategoriesByIds(bookRequestDto.categories()));
         return bookMapper.toDto(bookRepository.save(book));
     }
 
@@ -77,4 +93,19 @@ public class BookServiceImpl implements BookService {
         bookRepository.deleteById(id);
     }
 
+    private Set<Category> findCategoriesByIds(Set<Long> ids) {
+        Set<Category> categories = categoryService.findAllById(ids);
+        if (categories.size() != ids.size()) {
+            String missingIds = ids.stream()
+                    .filter(id -> categories.stream()
+                            .noneMatch(category -> category.getId().equals(id)))
+                    .map(Objects::toString)
+                    .collect(Collectors.joining(", "));
+            throw new BookProcessingException(
+                    "Book creation failed. There are not categories with id: "
+                            + missingIds
+            );
+        }
+        return categories;
+    }
 }

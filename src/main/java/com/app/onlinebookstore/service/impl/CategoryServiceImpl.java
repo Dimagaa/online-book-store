@@ -7,7 +7,9 @@ import com.app.onlinebookstore.mapper.CategoryMapper;
 import com.app.onlinebookstore.model.Category;
 import com.app.onlinebookstore.repository.book.CategoryRepository;
 import com.app.onlinebookstore.service.CategoryService;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -55,5 +57,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteById(Long id) {
         categoryRepository.deleteById(id);
+    }
+
+    @Override
+    public Set<Category> findAllById(Set<Long> ids) {
+        List<Category> categories = categoryRepository.findAllById(ids);
+        return new HashSet<>(categories);
     }
 }

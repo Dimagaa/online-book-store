@@ -19,22 +19,13 @@ public interface BookMapper {
     BookWithoutCategoryIdsDto toDtoWithoutIds(Book book);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "categories", ignore = true)
     @Mapping(target = "deleted", ignore = true)
     Book toModel(CreateBookRequestDto requestDto);
 
     default Set<Long> mapCategoryToIds(Set<Category> categories) {
         return categories.stream()
                 .map(Category::getId)
-                .collect(Collectors.toSet());
-    }
-
-    default Set<Category> mapIdsToCategory(Set<Long> ids) {
-        return ids.stream()
-                .map(id -> {
-                    Category category = new Category();
-                    category.setId(id);
-                    return category;
-                })
                 .collect(Collectors.toSet());
     }
 }

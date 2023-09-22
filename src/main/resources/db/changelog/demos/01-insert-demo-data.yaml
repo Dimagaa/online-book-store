@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-demo-data
+      author: Dmytro Martyshchuk
+      labels: demo
+      changes:
+        - sql:
+            sql:
+              INSERT INTO users (email, password, first_name, last_name, shipping_address)
+              VALUES ('harry@example.com', '$2a$10$eNDxAZLdjj7A42/3t6t/lu9YigNljFK2bk9HSabaM3wGEYMv.6dYK', 'Harry', 'Potter', '4 Privet Drive, Little Whinging, England');
+
+              INSERT INTO users (email, password, first_name, last_name, shipping_address)
+              VALUES ('frodo@example.com', '$2a$10$eNDxAZLdjj7A42/3t6t/lu9YigNljFK2bk9HSabaM3wGEYMv.6dYK', 'Frodo', 'Baggins', 'Bag End, Hobbiton, The Shire');
+
+              INSERT INTO users (email, password, first_name, last_name, shipping_address)
+              VALUES ('luke@example.com', '$2a$10$eNDxAZLdjj7A42/3t6t/lu9YigNljFK2bk9HSabaM3wGEYMv.6dYK', 'Luke', 'Skywalker', '123 Tatooine Way, Mos Eisley, Tatooine');
+
+              INSERT INTO users_roles (user_id, role_id)
+              SELECT id, (SELECT id FROM roles WHERE name = 'ROLE_USER') FROM users WHERE email IN ('harry@example.com', 'frodo@example.com', 'luke@example.com');
+        - loadData:
+            file: db/changelog/demos/demo-books.csv
+            tableName: books
+            columns:
+              - column:
+                  header: title
+                  name: title
+                  type: STRING
+              - column:
+                  header: author
+                  name: author
+                  type: STRING
+              - column:
+                  header: isbn
+                  name: isbn
+                  type: STRING
+              - column:
+                  header: price
+                  name: price
+                  type: NUMERIC
+              - column:
+                  header: description
+                  name: description
+                  type: STRING
+              - column:
+                  header: cover_image
+                  name: cover_image
+                  type: STRING
+            separator: ','
+            encoding: UTF-8
+        - loadData:
+            file: db/changelog/demos/demo-categories.csv
+            tableName: categories
+            columns:
+              - column:
+                  header: name
+                  name: name
+                  type: STRING
+              - column:
+                  header: description
+                  name: description
+                  type: STRING
+            separator: ','
+            encoding: UTF-8
+        - sqlFile:
+            path: db/changelog/demos/insert-books-categories.sql
