@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @SQLDelete(sql = "UPDATE books SET is_deleted = true WHERE id = ?")
