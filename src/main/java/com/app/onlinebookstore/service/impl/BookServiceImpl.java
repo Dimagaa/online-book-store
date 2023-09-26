@@ -102,7 +102,7 @@ public class BookServiceImpl implements BookService {
                     .map(Objects::toString)
                     .collect(Collectors.joining(", "));
             throw new BookProcessingException(
-                    "Book creation failed. There are not categories with id: "
+                    "Book processing failed. There are not categories with id: "
                             + missingIds
             );
         }
