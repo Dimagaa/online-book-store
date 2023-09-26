@@ -56,6 +56,7 @@ public class BookController {
     )
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
+    @ResponseStatus(value = HttpStatus.CREATED)
     public BookDto create(@RequestBody @Valid CreateBookRequestDto bookRequestDto) {
         return bookService.save(bookRequestDto);
     }
