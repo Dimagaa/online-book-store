@@ -26,7 +26,7 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.mockito.ArgumentMatchers.any;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -38,9 +38,8 @@ import org.springframework.data.jpa.domain.Specification;
 @ExtendWith(MockitoExtension.class)
 class BookServiceImplTest {
     private static final Pageable PAGEABLE = Pageable.ofSize(10);
-    private static Map<Long, Category> categories;
     private static Map<Long, Book> books;
-    private static Map<Long, BookDto> bookResponces;
+    private static Map<Long, BookDto> bookResponses;
     private static Map<Long, CreateBookRequestDto> bookRequests;
     @Mock
     private BookRepository bookRepository;
@@ -60,8 +59,6 @@ class BookServiceImplTest {
         Category category2 = new Category(2L, "Dystopian novel", "A dystopian novel", false);
         Category category3 = new Category(3L, "Romantic novel", "A romantic novel", false);
         Category additional = new Category(4L, "Additional", "Additional category", false);
-
-        categories = Map.of(1L, category1, 2L, category2, 3L, category3, 4L, additional);
 
         Book book1 = new Book(1L,
                 "To Kill a Mockingbird",
@@ -121,7 +118,7 @@ class BookServiceImplTest {
                 "/images/book3.jpg",
                 Set.of(3L, 4L));
 
-        bookResponces = Map.of(1L, bookDto1, 2L, bookDto2, 3L, bookDto3);
+        bookResponses = Map.of(1L, bookDto1, 2L, bookDto2, 3L, bookDto3);
 
         CreateBookRequestDto requestDto1 = new CreateBookRequestDto(
                 "To Kill a Mockingbird",
@@ -160,11 +157,13 @@ class BookServiceImplTest {
                         () -> {
                             CreateBookRequestDto requestDto = entry.getValue();
                             Book book = books.get(entry.getKey());
-                            BookDto expected = bookResponces.get(entry.getKey());
+                            BookDto expected = bookResponses.get(entry.getKey());
 
                             Mockito.when(bookMapper.toModel(requestDto)).thenReturn(book);
-                            Mockito.when(bookRepository.findByIsbn(book.getIsbn())).thenReturn(Optional.empty());
-                            Mockito.when(categoryService.findAllById(requestDto.categories())).thenReturn(book.getCategories());
+                            Mockito.when(bookRepository.findByIsbn(book.getIsbn()))
+                                    .thenReturn(Optional.empty());
+                            Mockito.when(categoryService.findAllById(requestDto.categories()))
+                                    .thenReturn(book.getCategories());
                             Mockito.when(bookRepository.save(book)).thenReturn(book);
                             Mockito.when(bookMapper.toDto(book)).thenReturn(expected);
 
@@ -195,7 +194,8 @@ class BookServiceImplTest {
         CreateBookRequestDto requestDto = bookRequests.get(1L);
         Book book = books.get(1L);
 
-        Mockito.when(bookRepository.findByIsbn(any())).thenReturn(Optional.empty());
+        Mockito.when(bookRepository.findByIsbn(ArgumentMatchers.any()))
+                .thenReturn(Optional.empty());
 
         Exception exception = Assertions.assertThrows(BookProcessingException.class,
                 () -> bookService.save(requestDto));
@@ -208,16 +208,14 @@ class BookServiceImplTest {
     @Test
     @DisplayName("findAll: When Books Exist, Return List of BookDtos")
     void findAll_WhenBooksExist_ReturnListOfBookDtos() {
-        List<BookDto> expected = bookResponces.values().stream()
+        final List<BookDto> expected = bookResponses.values().stream()
                 .sorted(Comparator.comparingLong(BookDto::id))
                 .toList();
 
         Mockito.when(bookRepository.findAllWithCategories(PAGEABLE))
                 .thenReturn(books.values().stream().toList());
-        books.values().forEach((book) ->
-                Mockito.when(bookMapper.toDto(book))
-                        .thenReturn(bookResponces.get(book.getId()))
-        );
+        books.values().forEach((book) -> Mockito.when(bookMapper.toDto(book))
+                        .thenReturn(bookResponses.get(book.getId())));
 
         List<BookDto> actual = bookService.findAll(PAGEABLE);
         actual.sort(Comparator.comparingLong(BookDto::id));
@@ -241,7 +239,7 @@ class BookServiceImplTest {
         return bookRequests.keySet().stream()
                 .map((id) -> DynamicTest.dynamicTest("Get by id: " + id,
                         () -> {
-                            BookDto expected = bookResponces.get(id);
+                            BookDto expected = bookResponses.get(id);
                             Book book = books.get(id);
                             Mockito.when(bookRepository.findByIdWithCategories(id))
                                     .thenReturn(Optional.of(book));
@@ -262,7 +260,7 @@ class BookServiceImplTest {
     @DisplayName("getById: When Book Does Not Exist, Throw EntityNotFoundException")
     void getById_WhenBookDoesNotExist_ThrowEntityNotFoundException() {
         Long id = 999L;
-        Mockito.when(bookRepository.findByIdWithCategories(any()))
+        Mockito.when(bookRepository.findByIdWithCategories(ArgumentMatchers.any()))
                 .thenReturn(Optional.empty());
 
         Exception exception = Assertions.assertThrows(EntityNotFoundException.class,
@@ -281,7 +279,7 @@ class BookServiceImplTest {
                             Long id = entry.getKey();
                             CreateBookRequestDto requestDto = entry.getValue();
                             Book book = books.get(id);
-                            BookDto expected = bookResponces.get(id);
+                            BookDto expected = bookResponses.get(id);
 
                             Mockito.when(bookRepository.findById(id))
                                     .thenReturn(Optional.of(book));
@@ -302,7 +300,8 @@ class BookServiceImplTest {
     void update_WhenBookDoesNotExist_ThrowEntityNotFoundException() {
         Long id = 1L;
         CreateBookRequestDto requestDto = bookRequests.get(id);
-        Mockito.when(bookRepository.findById(any())).thenReturn(Optional.empty());
+        Mockito.when(bookRepository.findById(ArgumentMatchers.any()))
+                .thenReturn(Optional.empty());
 
         Exception exception = Assertions.assertThrows(EntityNotFoundException.class,
                 () -> bookService.update(id, requestDto));
@@ -317,7 +316,8 @@ class BookServiceImplTest {
         CreateBookRequestDto requestDto = bookRequests.get(1L);
         Book book = books.get(1L);
 
-        Mockito.when(bookRepository.findById(any())).thenReturn(Optional.of(book));
+        Mockito.when(bookRepository.findById(ArgumentMatchers.any()))
+                .thenReturn(Optional.of(book));
         Mockito.when(bookMapper.toModel(requestDto)).thenReturn(book);
 
         Exception exception = Assertions.assertThrows(BookProcessingException.class,
@@ -344,7 +344,8 @@ class BookServiceImplTest {
                 "A romantic novel",
                 "/images/book3.jpg");
 
-        Mockito.when(specificationBuilder.build(bookSearchParameters)).thenReturn(specification);
+        Mockito.when(specificationBuilder.build(bookSearchParameters))
+                .thenReturn(specification);
         Mockito.when(bookRepository.findAll(specification, PAGEABLE))
                 .thenReturn(new PageImpl<>(List.of(book)));
         Mockito.when(bookMapper.toDtoWithoutIds(book)).thenReturn(expected);
@@ -379,6 +380,8 @@ class BookServiceImplTest {
     @DisplayName("deleteById: When Book Exists, Delete Successfully")
     void deleteById_WhenBookExists_DeleteSuccessfully() {
         Long id = 999L;
+        Mockito.when(bookRepository.findById(ArgumentMatchers.any()))
+                .thenReturn(Optional.of(books.get(1L)));
 
         bookService.deleteById(id);
 
