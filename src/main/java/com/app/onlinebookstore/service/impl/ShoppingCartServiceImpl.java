@@ -46,7 +46,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .filter(item -> request.bookId().equals(item.getBook().getId()))
                 .peek(item -> item.setQuantity(item.getQuantity() + request.quantity()))
                 .findFirst()
-                .orElse(createNewCartItem(shoppingCart, request));
+                .orElseGet(() -> createNewCartItem(shoppingCart, request));
         return cartItemMapper.toDto(cartItemRepository.save(cartItem));
     }
 
@@ -82,7 +82,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public void clear(ShoppingCart shoppingCart) {
         cartItemRepository.deleteAll(shoppingCart.getCartItems());
-        shoppingCart.getCartItems().clear();
     }
 
     private ShoppingCart createNewShoppingCart() {
