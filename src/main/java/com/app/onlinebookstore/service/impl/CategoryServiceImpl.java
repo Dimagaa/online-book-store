@@ -1,7 +1,8 @@
 package com.app.onlinebookstore.service.impl;
 
-import com.app.onlinebookstore.dto.category.CategoryCreateRequestDto;
 import com.app.onlinebookstore.dto.category.CategoryDto;
+import com.app.onlinebookstore.dto.category.CategoryRequestDto;
+import com.app.onlinebookstore.exception.EntityAlreadyExistsException;
 import com.app.onlinebookstore.exception.EntityNotFoundException;
 import com.app.onlinebookstore.mapper.CategoryMapper;
 import com.app.onlinebookstore.model.Category;
@@ -9,6 +10,7 @@ import com.app.onlinebookstore.repository.book.CategoryRepository;
 import com.app.onlinebookstore.service.CategoryService;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -38,13 +40,21 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto save(CategoryCreateRequestDto request) {
+    public CategoryDto save(CategoryRequestDto request) {
+        Optional<Category> category = categoryRepository.findByName(request.name());
+        if (category.isPresent()) {
+            throw new EntityAlreadyExistsException(
+                    "Category already exists by name: " + category.get().getName()
+                            + ", category id: " + category.get().getId()
+            );
+        }
+
         Category savedCategory = categoryRepository.save(categoryMapper.toEntity(request));
         return categoryMapper.toDto(savedCategory);
     }
 
     @Override
-    public CategoryDto update(Long id, CategoryCreateRequestDto categoryDto) {
+    public CategoryDto update(Long id, CategoryRequestDto categoryDto) {
         categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Can't find entity by id: " + id
@@ -56,6 +66,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteById(Long id) {
+        categoryRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(
+                        "Not found category by id: " + id
+                ));
         categoryRepository.deleteById(id);
     }
 

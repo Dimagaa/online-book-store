@@ -5,6 +5,7 @@ import com.app.onlinebookstore.dto.book.BookSearchParameters;
 import com.app.onlinebookstore.dto.book.BookWithoutCategoryIdsDto;
 import com.app.onlinebookstore.dto.book.CreateBookRequestDto;
 import com.app.onlinebookstore.exception.BookProcessingException;
+import com.app.onlinebookstore.exception.EntityAlreadyExistsException;
 import com.app.onlinebookstore.exception.EntityNotFoundException;
 import com.app.onlinebookstore.mapper.BookMapper;
 import com.app.onlinebookstore.model.Book;
@@ -35,7 +36,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public BookDto save(CreateBookRequestDto bookRequestDto) {
         if (bookRepository.findByIsbn(bookRequestDto.isbn()).isPresent()) {
-            throw new BookProcessingException(
+            throw new EntityAlreadyExistsException(
                     "Book creation failed. A book with ISBN already exists: "
                             + bookRequestDto.isbn());
         }

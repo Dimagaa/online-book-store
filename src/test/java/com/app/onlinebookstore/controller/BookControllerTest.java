@@ -7,7 +7,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -220,13 +219,13 @@ class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
 
-        BookDto[] actual = objectMapper.readValue(result.getResponse()
-                .getContentAsByteArray(), BookDto[].class);
+        List<BookDto> actual = objectMapper.readValue(result.getResponse()
+                .getContentAsByteArray(), new TypeReference<>() {}
+        );
+        actual.sort(Comparator.comparingLong(BookDto::id));
 
-        Assertions.assertEquals(expected.size(), actual.length);
-        Assertions.assertEquals(expected, Arrays.stream(actual)
-                .sorted(Comparator.comparingLong(BookDto::id))
-                .toList());
+        Assertions.assertEquals(expected.size(), actual.size());
+        Assertions.assertEquals(expected, actual);
     }
 
     @WithMockUser(username = "user", roles = {"USER"})

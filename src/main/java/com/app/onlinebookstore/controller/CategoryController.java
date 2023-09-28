@@ -1,8 +1,8 @@
 package com.app.onlinebookstore.controller;
 
 import com.app.onlinebookstore.dto.book.BookWithoutCategoryIdsDto;
-import com.app.onlinebookstore.dto.category.CategoryCreateRequestDto;
 import com.app.onlinebookstore.dto.category.CategoryDto;
+import com.app.onlinebookstore.dto.category.CategoryRequestDto;
 import com.app.onlinebookstore.service.BookService;
 import com.app.onlinebookstore.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,7 +37,8 @@ public class CategoryController {
     )
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public CategoryDto create(@RequestBody @Valid CategoryCreateRequestDto request) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public CategoryDto create(@RequestBody @Valid CategoryRequestDto request) {
         return categoryService.save(request);
     }
 
@@ -68,7 +69,7 @@ public class CategoryController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public CategoryDto update(@PathVariable Long id,
-                              @RequestBody @Valid CategoryCreateRequestDto categoryDto) {
+                              @RequestBody @Valid CategoryRequestDto categoryDto) {
         return categoryService.update(id, categoryDto);
     }
 

@@ -5,6 +5,7 @@ import com.app.onlinebookstore.dto.book.BookSearchParameters;
 import com.app.onlinebookstore.dto.book.BookWithoutCategoryIdsDto;
 import com.app.onlinebookstore.dto.book.CreateBookRequestDto;
 import com.app.onlinebookstore.exception.BookProcessingException;
+import com.app.onlinebookstore.exception.EntityAlreadyExistsException;
 import com.app.onlinebookstore.exception.EntityNotFoundException;
 import com.app.onlinebookstore.mapper.BookMapper;
 import com.app.onlinebookstore.model.Book;
@@ -180,7 +181,7 @@ class BookServiceImplTest {
         Book book = books.get(1L);
         Mockito.when(bookRepository.findByIsbn(book.getIsbn())).thenReturn(Optional.of(book));
 
-        Exception exception = Assertions.assertThrows(BookProcessingException.class,
+        Exception exception = Assertions.assertThrows(EntityAlreadyExistsException.class,
                 () -> bookService.save(requestDto));
         Assertions.assertEquals(
                 "Book creation failed. A book with ISBN already exists: "
