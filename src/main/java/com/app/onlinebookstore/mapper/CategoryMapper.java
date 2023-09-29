@@ -1,8 +1,8 @@
 package com.app.onlinebookstore.mapper;
 
 import com.app.onlinebookstore.config.MapperConfig;
-import com.app.onlinebookstore.dto.category.CategoryCreateRequestDto;
 import com.app.onlinebookstore.dto.category.CategoryDto;
+import com.app.onlinebookstore.dto.category.CategoryRequestDto;
 import com.app.onlinebookstore.model.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,5 +13,5 @@ public interface CategoryMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "deleted", ignore = true)
-    Category toEntity(CategoryCreateRequestDto request);
+    Category toEntity(CategoryRequestDto request);
 }

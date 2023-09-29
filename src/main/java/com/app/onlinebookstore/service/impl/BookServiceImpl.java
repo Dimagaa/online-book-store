@@ -5,6 +5,7 @@ import com.app.onlinebookstore.dto.book.BookSearchParameters;
 import com.app.onlinebookstore.dto.book.BookWithoutCategoryIdsDto;
 import com.app.onlinebookstore.dto.book.CreateBookRequestDto;
 import com.app.onlinebookstore.exception.BookProcessingException;
+import com.app.onlinebookstore.exception.EntityAlreadyExistsException;
 import com.app.onlinebookstore.exception.EntityNotFoundException;
 import com.app.onlinebookstore.mapper.BookMapper;
 import com.app.onlinebookstore.model.Book;
@@ -35,7 +36,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public BookDto save(CreateBookRequestDto bookRequestDto) {
         if (bookRepository.findByIsbn(bookRequestDto.isbn()).isPresent()) {
-            throw new BookProcessingException(
+            throw new EntityAlreadyExistsException(
                     "Book creation failed. A book with ISBN already exists: "
                             + bookRequestDto.isbn());
         }
@@ -90,6 +91,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteById(Long id) {
+        bookRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Not found book with id: " + id));
         bookRepository.deleteById(id);
     }
 
@@ -102,7 +105,7 @@ public class BookServiceImpl implements BookService {
                     .map(Objects::toString)
                     .collect(Collectors.joining(", "));
             throw new BookProcessingException(
-                    "Book creation failed. There are not categories with id: "
+                    "Book processing failed. There are not categories with id: "
                             + missingIds
             );
         }
