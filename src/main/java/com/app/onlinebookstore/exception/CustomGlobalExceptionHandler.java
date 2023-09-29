@@ -92,6 +92,16 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({EntityAlreadyExistsException.class})
+    protected ResponseEntity<Object> handleEntityAlreadyExistException(Exception exception) {
+        ErrorResponseDto response = new ErrorResponseDto(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT,
+                new String[]{exception.getMessage()}
+        );
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(RuntimeException.class)
     protected ResponseEntity<Object> handleAllErrors(Exception exception) {
         logger.error("Internal server error: ", exception);

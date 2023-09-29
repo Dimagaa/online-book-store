@@ -1,7 +1,7 @@
 package com.app.onlinebookstore.service;
 
-import com.app.onlinebookstore.dto.category.CategoryCreateRequestDto;
 import com.app.onlinebookstore.dto.category.CategoryDto;
+import com.app.onlinebookstore.dto.category.CategoryRequestDto;
 import com.app.onlinebookstore.model.Category;
 import java.util.List;
 import java.util.Set;
@@ -12,9 +12,9 @@ public interface CategoryService {
 
     CategoryDto getById(Long id);
 
-    CategoryDto save(CategoryCreateRequestDto request);
+    CategoryDto save(CategoryRequestDto request);
 
-    CategoryDto update(Long id, CategoryCreateRequestDto categoryDto);
+    CategoryDto update(Long id, CategoryRequestDto categoryDto);
 
     void deleteById(Long id);
 
