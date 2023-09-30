@@ -39,15 +39,15 @@ import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BookControllerTest {
-    public static final String INSERT_IMMUTABLE_BOOKS_AND_CATEGORIES_SQL =
-            "sql-scripts/books/InsertImmutableBooksAndCategories.sql";
-    public static final String DELETE_IMMUTABLE_BOOKS_AND_CATEGORIES_SQL =
-            "sql-scripts/books/DeleteImmutableBooksAndCategories.sql";
-    public static final String INSERT_MUTABLE_BOOKS_SQL =
-            "classpath:sql-scripts/books/InsertMutableBooks.sql";
-    public static final String DELETE_MUTABLE_BOOKS_SQL =
-            "classpath:sql-scripts/books/DeleteMutableBooks.sql";
     protected static MockMvc mockMvc;
+    private static final String INSERT_IMMUTABLE_BOOKS_AND_CATEGORIES_SQL =
+            "sql-scripts/books/InsertImmutableBooksAndCategories.sql";
+    private static final String DELETE_IMMUTABLE_BOOKS_AND_CATEGORIES_SQL =
+            "sql-scripts/books/DeleteImmutableBooksAndCategories.sql";
+    private static final String INSERT_MUTABLE_BOOKS_SQL =
+            "classpath:sql-scripts/books/InsertMutableBooks.sql";
+    private static final String DELETE_MUTABLE_BOOKS_SQL =
+            "classpath:sql-scripts/books/DeleteMutableBooks.sql";
     private static Map<Long, BookDto> responseDtos;
     private static Map<Long, BookWithoutCategoryIdsDto> responseWithOutCategoriesDtos;
     private static Map<Long, CreateBookRequestDto> requestDtos;
@@ -211,7 +211,6 @@ class BookControllerTest {
     static void afterAll(@Autowired DataSource dataSource) {
         deleteData(dataSource);
     }
-
     @WithMockUser(username = "user")
     @SneakyThrows
     @Test

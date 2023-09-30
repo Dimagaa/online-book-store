@@ -354,7 +354,6 @@ class BookServiceImplTest {
                 EntityProcessingException.class,
                 () -> bookService.update(book.getId(), requestDto)
         );
-
         Assertions.assertEquals(
                 "Book processing failed. There are not categories with id: "
                         + book.getId(),
