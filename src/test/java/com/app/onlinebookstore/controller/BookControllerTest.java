@@ -39,6 +39,14 @@ import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BookControllerTest {
+    public static final String INSERT_IMMUTABLE_BOOKS_AND_CATEGORIES_SQL =
+            "sql-scripts/books/InsertImmutableBooksAndCategories.sql";
+    public static final String DELETE_IMMUTABLE_BOOKS_AND_CATEGORIES_SQL =
+            "sql-scripts/books/DeleteImmutableBooksAndCategories.sql";
+    public static final String INSERT_MUTABLE_BOOKS_SQL =
+            "classpath:sql-scripts/books/InsertMutableBooks.sql";
+    public static final String DELETE_MUTABLE_BOOKS_SQL =
+            "classpath:sql-scripts/books/DeleteMutableBooks.sql";
     protected static MockMvc mockMvc;
     private static Map<Long, BookDto> responseDtos;
     private static Map<Long, BookWithoutCategoryIdsDto> responseWithOutCategoriesDtos;
@@ -204,7 +212,7 @@ class BookControllerTest {
         deleteData(dataSource);
     }
 
-    @WithMockUser(username = "user", roles = {"USER"})
+    @WithMockUser(username = "user")
     @SneakyThrows
     @Test
     @DisplayName("getAll: When Books Exist, Return List of BookDtos")
@@ -228,7 +236,7 @@ class BookControllerTest {
         Assertions.assertEquals(expected, actual);
     }
 
-    @WithMockUser(username = "user", roles = {"USER"})
+    @WithMockUser(username = "user")
     @TestFactory
     @DisplayName("getById: When Book Exists, Return BookDto")
     Stream<DynamicTest> getById_WhenBookExists_ReturnBookDto() {
@@ -253,7 +261,7 @@ class BookControllerTest {
 
     }
 
-    @WithMockUser(username = "user", roles = {"USER"})
+    @WithMockUser(username = "user")
     @SneakyThrows
     @Test
     @DisplayName("getById: When Book Does Not Exist, Return 404 NotFound")
@@ -270,7 +278,7 @@ class BookControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @TestFactory
     @DisplayName("create: When Valid Book Request, Return Created BookDto")
-    @Sql(scripts = "classpath:sql-scripts/books/DeleteMutable.sql",
+    @Sql(scripts = DELETE_MUTABLE_BOOKS_SQL,
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     Stream<DynamicTest> create_WhenValidBookRequest_ReturnCreatedBookDto() {
         return requestDtos.entrySet().stream()
@@ -302,9 +310,9 @@ class BookControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @TestFactory
     @DisplayName("update: When Valid Book Request and Book Exists, Return Updated BookDto")
-    @Sql(scripts = "classpath:sql-scripts/books/InsertMutableBooks.sql",
+    @Sql(scripts = INSERT_MUTABLE_BOOKS_SQL,
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:sql-scripts/books/DeleteMutable.sql",
+    @Sql(scripts = DELETE_MUTABLE_BOOKS_SQL,
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     Stream<DynamicTest> update_WhenValidBookRequestAndBookExists_ReturnUpdatedBookDto() {
         return requestDtos.entrySet().stream()
@@ -331,7 +339,8 @@ class BookControllerTest {
 
                             Assertions.assertEquals(expected, actual);
                             Assertions.assertEquals(expected.categories(), actual.categories());
-                        }));
+                        })
+                );
     }
 
     @WithMockUser(username = "admin", roles = {"ADMIN"})
@@ -350,7 +359,7 @@ class BookControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @TestFactory
     @DisplayName("deleteById: When Book Exists, Return 204 NoContent")
-    @Sql(scripts = "classpath:sql-scripts/books/InsertMutableBooks.sql",
+    @Sql(scripts = INSERT_MUTABLE_BOOKS_SQL,
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     Stream<DynamicTest> deleteById_WhenBookExists_Return204NoContent() {
         return requestDtos.keySet().stream()
@@ -376,7 +385,7 @@ class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
-    @WithMockUser(username = "user", roles = {"USER"})
+    @WithMockUser(username = "user")
     @Test
     @DisplayName("search: When Books Match Search Criteria, Return List of BookDtos")
     void search_WhenBooksMatchSearchCriteria_ReturnListOfBookDtos() throws Exception {
@@ -438,7 +447,7 @@ class BookControllerTest {
     private static void insertData(DataSource dataSource) {
         try (Connection connection = dataSource.getConnection()) {
             ScriptUtils.executeSqlScript(connection, new ClassPathResource(
-                    "sql-scripts/books/InsertImmutableBooks.sql"
+                    INSERT_IMMUTABLE_BOOKS_AND_CATEGORIES_SQL
             ));
         }
     }
@@ -447,7 +456,7 @@ class BookControllerTest {
     private static void deleteData(DataSource dataSource) {
         try (Connection connection = dataSource.getConnection()) {
             ScriptUtils.executeSqlScript(connection, new ClassPathResource(
-                    "sql-scripts/books/DeleteImmutableBooksWithCategories.sql"
+                    DELETE_IMMUTABLE_BOOKS_AND_CATEGORIES_SQL
             ));
         }
     }

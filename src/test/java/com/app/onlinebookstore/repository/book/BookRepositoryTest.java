@@ -74,9 +74,9 @@ class BookRepositoryTest {
 
     @Test
     @DisplayName("Find All Books by Category ID: When Category Exists, Return List of Books")
-    @Sql(scripts = {"classpath:sql-scripts/books/InsertImmutableBooks.sql"},
+    @Sql(scripts = {"classpath:sql-scripts/books/InsertImmutableBooksAndCategories.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"classpath:sql-scripts/books/DeleteImmutableBooksWithCategories.sql"},
+    @Sql(scripts = {"classpath:sql-scripts/books/DeleteImmutableBooksAndCategories.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void findAllByCategoryId_WhenCategoryExists_ReturnListOfBooks() {
         Pageable pageable = Pageable.ofSize(10);
@@ -116,9 +116,9 @@ class BookRepositoryTest {
 
     @TestFactory
     @DisplayName("Find Book by ID with Categories: When Book Exists, Return Optional<Book>")
-    @Sql(scripts = {"classpath:sql-scripts/books/InsertImmutableBooks.sql"},
+    @Sql(scripts = {"classpath:sql-scripts/books/InsertImmutableBooksAndCategories.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"classpath:sql-scripts/books/DeleteImmutableBooksWithCategories.sql"},
+    @Sql(scripts = {"classpath:sql-scripts/books/DeleteImmutableBooksAndCategories.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     Stream<DynamicTest> findByIdWithCategories_WhenBookExists_ReturnOptionalOfBook() {
         return books.entrySet().stream()
@@ -155,9 +155,9 @@ class BookRepositoryTest {
 
     @Test
     @DisplayName("Find All Books with Categories: Return List of Books with Categories")
-    @Sql(scripts = {"classpath:sql-scripts/books/InsertImmutableBooks.sql"},
+    @Sql(scripts = {"classpath:sql-scripts/books/InsertImmutableBooksAndCategories.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"classpath:sql-scripts/books/DeleteImmutableBooksWithCategories.sql"},
+    @Sql(scripts = {"classpath:sql-scripts/books/DeleteImmutableBooksAndCategories.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void findAllWithCategories_WhenCategoriesExist_ReturnListOfBooks() {
         Pageable pageable = Pageable.ofSize(10);
@@ -192,9 +192,9 @@ class BookRepositoryTest {
 
     @TestFactory
     @DisplayName("Find Book by ISBN: When Book Exists, Return Optional<Book>")
-    @Sql(scripts = {"classpath:sql-scripts/books/InsertImmutableBooks.sql"},
+    @Sql(scripts = {"classpath:sql-scripts/books/InsertImmutableBooksAndCategories.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"classpath:sql-scripts/books/DeleteImmutableBooksWithCategories.sql"},
+    @Sql(scripts = {"classpath:sql-scripts/books/DeleteImmutableBooksAndCategories.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     Stream<DynamicTest> findByIsbn_WhenBookExists_ReturnOptionalOfBook() {
         return books.values().stream()

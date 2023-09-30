@@ -4,9 +4,9 @@ import com.app.onlinebookstore.dto.book.BookDto;
 import com.app.onlinebookstore.dto.book.BookSearchParameters;
 import com.app.onlinebookstore.dto.book.BookWithoutCategoryIdsDto;
 import com.app.onlinebookstore.dto.book.CreateBookRequestDto;
-import com.app.onlinebookstore.exception.BookProcessingException;
 import com.app.onlinebookstore.exception.EntityAlreadyExistsException;
 import com.app.onlinebookstore.exception.EntityNotFoundException;
+import com.app.onlinebookstore.exception.EntityProcessingException;
 import com.app.onlinebookstore.mapper.BookMapper;
 import com.app.onlinebookstore.model.Book;
 import com.app.onlinebookstore.model.Category;
@@ -104,7 +104,7 @@ public class BookServiceImpl implements BookService {
                             .noneMatch(category -> category.getId().equals(id)))
                     .map(Objects::toString)
                     .collect(Collectors.joining(", "));
-            throw new BookProcessingException(
+            throw new EntityProcessingException(
                     "Book processing failed. There are not categories with id: "
                             + missingIds
             );

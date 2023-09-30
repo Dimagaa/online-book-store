@@ -40,6 +40,14 @@ import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CategoryControllerTest {
     protected static MockMvc mockMvc;
+    private static final String INSERT_BOOKS_AND_CATEGORIES_SQL =
+            "classpath:sql-scripts/books/InsertImmutableBooksAndCategories.sql";
+    private static final String DELETE_BOOKS_AND_CATEGORIES_SQL =
+            "classpath:sql-scripts/books/DeleteImmutableBooksAndCategories.sql";
+    private static final String DELETE_CATEGORIES_SQL =
+            "classpath:sql-scripts/books/DeleteCategories.sql";
+    private static final String INSERT_CATEGORIES_SQL =
+            "classpath:sql-scripts/books/InsertCategories.sql";
     private static Map<Long, CategoryRequestDto> requestDtos;
     private static Map<Long, CategoryDto> categoryDtos;
     private static Map<Long, BookWithoutCategoryIdsDto> responseWithOutCategoriesDtos;
@@ -50,7 +58,8 @@ class CategoryControllerTest {
     static void beforeAll(@Autowired WebApplicationContext applicationContext,
                           @Autowired DataSource dataSource) {
         mockMvc = MockMvcBuilders.webAppContextSetup(applicationContext)
-                .apply(SecurityMockMvcConfigurers.springSecurity()).build();
+                .apply(SecurityMockMvcConfigurers.springSecurity())
+                .build();
 
         CategoryRequestDto requestDto1 = new CategoryRequestDto(
                 "Fantasy Adventure",
@@ -123,7 +132,7 @@ class CategoryControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @TestFactory
     @DisplayName("create: When Valid Category Create Request, Return Created CategoryDto")
-    @Sql(scripts = "classpath:sql-scripts/books/DeleteCategories.sql",
+    @Sql(scripts = DELETE_CATEGORIES_SQL,
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     Stream<DynamicTest> create_WhenValidCategoryCreateRequest_ReturnCreatedCategoryDto() {
         return requestDtos.entrySet().stream()
@@ -152,7 +161,7 @@ class CategoryControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     @DisplayName("create: When Category with Same Name Exists, Return 409 Conflict")
-    @Sql(scripts = "classpath:sql-scripts/books/DeleteCategories.sql",
+    @Sql(scripts = DELETE_CATEGORIES_SQL,
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void create_WhenCategoryWithSameNameExists_Return409Conflict() {
         String request = objectMapper.writeValueAsString(requestDtos.get(1L));
@@ -194,12 +203,12 @@ class CategoryControllerTest {
     }
 
     @SneakyThrows
-    @WithMockUser(username = "user", roles = {"USER"})
+    @WithMockUser(username = "user")
     @Test
     @DisplayName("getAll: When Categories Exist, Return List of CategoryDtos")
-    @Sql(scripts = "classpath:sql-scripts/books/InsertCategories.sql",
+    @Sql(scripts = INSERT_CATEGORIES_SQL,
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:sql-scripts/books/DeleteCategories.sql",
+    @Sql(scripts = DELETE_CATEGORIES_SQL,
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getAll_WhenCategoriesExist_ReturnListOfCategoryDtos() {
         List<CategoryDto> expected = categoryDtos.values()
@@ -224,12 +233,12 @@ class CategoryControllerTest {
         Assertions.assertIterableEquals(expected, actual);
     }
 
-    @WithMockUser(username = "user", roles = {"USER"})
+    @WithMockUser(username = "user")
     @TestFactory
     @DisplayName("getById: When Category Exists, Return CategoryDto")
-    @Sql(scripts = "classpath:sql-scripts/books/InsertCategories.sql",
+    @Sql(scripts = INSERT_CATEGORIES_SQL,
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:sql-scripts/books/DeleteCategories.sql",
+    @Sql(scripts = DELETE_CATEGORIES_SQL,
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     Stream<DynamicTest> getById_WhenCategoryExists_ReturnCategoryDto() {
         return categoryDtos.values().stream()
@@ -254,7 +263,7 @@ class CategoryControllerTest {
 
     @SneakyThrows
     @Test
-    @WithMockUser(username = "user", roles = {"USER"})
+    @WithMockUser(username = "user")
     @DisplayName("getById: When Category Does Not Exist, Return 404 NotFound")
     void getById_WhenCategoryDoesNotExist_Return404NotFound() {
         long id = -999L;
@@ -267,9 +276,9 @@ class CategoryControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @TestFactory
     @DisplayName("update: When Request Valid and Category Exists, Return Updated CategoryDto")
-    @Sql(scripts = "classpath:sql-scripts/books/InsertCategories.sql",
+    @Sql(scripts = INSERT_CATEGORIES_SQL,
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:sql-scripts/books/DeleteCategories.sql",
+    @Sql(scripts = DELETE_CATEGORIES_SQL,
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     Stream<DynamicTest> update_WhenValidRequestAndCategoryExists_ReturnUpdatedCategoryDto() {
         return categoryDtos.values()
@@ -303,9 +312,9 @@ class CategoryControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     @DisplayName("update: When Valid Request and Category Does Not Exist, Return 404 NotFound")
-    @Sql(scripts = "classpath:sql-scripts/books/InsertCategories.sql",
+    @Sql(scripts = INSERT_CATEGORIES_SQL,
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:sql-scripts/books/DeleteCategories.sql",
+    @Sql(scripts = DELETE_CATEGORIES_SQL,
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void update_WhenValidCategoryCreateRequestAndCategoryDoesNotExist_Return404NotFound() {
         long id = -999L;
@@ -320,9 +329,9 @@ class CategoryControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @TestFactory
     @DisplayName("delete: When Category Exists, Return 204 NoContent")
-    @Sql(scripts = "classpath:sql-scripts/books/InsertCategories.sql",
+    @Sql(scripts = INSERT_CATEGORIES_SQL,
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:sql-scripts/books/DeleteCategories.sql",
+    @Sql(scripts = DELETE_CATEGORIES_SQL,
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     Stream<DynamicTest> delete_WhenCategoryExists_Return204NoContent() {
         return categoryDtos.keySet().stream()
@@ -350,14 +359,14 @@ class CategoryControllerTest {
 
     @SneakyThrows
     @Test
-    @WithMockUser(username = "user", roles = {"USER"})
+    @WithMockUser(username = "user")
     @DisplayName(
             "getBooksByCategoryId: When Books Exist for Category, "
                     + "Return List of BookWithoutCategoryIdsDtos"
     )
-    @Sql(scripts = "classpath:sql-scripts/books/InsertImmutableBooks.sql",
+    @Sql(scripts = INSERT_BOOKS_AND_CATEGORIES_SQL,
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:sql-scripts/books/DeleteImmutableBooksWithCategories.sql",
+    @Sql(scripts = DELETE_BOOKS_AND_CATEGORIES_SQL,
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getBooksByCategoryId_WhenBooksExistForCategory_ReturnListOfBookDtos() {
         final List<BookWithoutCategoryIdsDto> expectedForClassic = List.of(

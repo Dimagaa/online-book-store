@@ -1,8 +1,8 @@
 package com.app.onlinebookstore.service.impl;
 
-import com.app.onlinebookstore.dto.cartitem.CartItemCreateRequestDto;
+import com.app.onlinebookstore.dto.cartitem.CartItemCreateDto;
 import com.app.onlinebookstore.dto.cartitem.CartItemDto;
-import com.app.onlinebookstore.dto.cartitem.CartItemUpdateRequestDto;
+import com.app.onlinebookstore.dto.cartitem.CartItemUpdateDto;
 import com.app.onlinebookstore.dto.shoppingcart.ShoppingCartDto;
 import com.app.onlinebookstore.exception.EntityNotFoundException;
 import com.app.onlinebookstore.mapper.CartItemMapper;
@@ -42,7 +42,6 @@ class ShoppingCartServiceImplTest {
     private static ShoppingCart shoppingCart;
     private static ShoppingCartDto shoppingCartDto;
     private static Map<Long, CartItem> cartItems;
-    private static Map<Long, CartItemDto> cartItemDtos;
 
     @Mock
     private ShoppingCartRepository shoppingCartRepository;
@@ -81,20 +80,23 @@ class ShoppingCartServiceImplTest {
         Category category1 = new Category(1L,
                 "Classic novel",
                 "A classic novel",
-                false);
+                false
+        );
         Category category2 = new Category(2L,
                 "Dystopian novel",
                 "A dystopian novel",
-                false);
+                false
+        );
         Category category3 = new Category(3L,
                 "Romantic novel",
                 "A romantic novel",
-                false);
+                false
+        );
         Category additional = new Category(4L,
                 "Additional",
                 "Additional category",
-                false);
-
+                false
+        );
         Book book1 = new Book(1L,
                 "To Kill a Mockingbird",
                 "Harper Lee",
@@ -103,8 +105,8 @@ class ShoppingCartServiceImplTest {
                 "A classic novel",
                 "/book1.jpg",
                 false,
-                Set.of(category1));
-
+                Set.of(category1)
+        );
         Book book2 = new Book(2L,
                 "1984",
                 "George Orwell",
@@ -113,8 +115,8 @@ class ShoppingCartServiceImplTest {
                 "A dystopian novel",
                 "/book2.jpg",
                 false,
-                Set.of(category2, additional));
-
+                Set.of(category2, additional)
+        );
         Book book3 = new Book(3L,
                 "Pride and Prejudice",
                 "Jane Austen",
@@ -123,29 +125,26 @@ class ShoppingCartServiceImplTest {
                 "A romantic novel",
                 "/images/book3.jpg",
                 false,
-                Set.of(category3, additional));
-
+                Set.of(category3, additional)
+        );
         CartItem cartItem1 = new CartItem(1L,
                 shoppingCart,
                 book1,
                 2,
                 false
         );
-
         CartItem cartItem2 = new CartItem(2L,
                 shoppingCart,
                 book2,
                 3,
                 false
         );
-
         CartItem cartItem3 = new CartItem(3L,
                 shoppingCart,
                 book3,
                 1,
                 false
         );
-
         cartItems = Map.of(1L, cartItem1, 2L, cartItem2, 3L, cartItem3);
 
         CartItemDto cartItemDto1 = new CartItemDto(1L,
@@ -153,26 +152,28 @@ class ShoppingCartServiceImplTest {
                 book1.getTitle(),
                 cartItem1.getQuantity()
         );
-
         CartItemDto cartItemDto2 = new CartItemDto(2L,
                 book2.getId(),
                 book2.getTitle(),
                 cartItem2.getQuantity()
         );
-
         CartItemDto cartItemDto3 = new CartItemDto(3L,
                 book3.getId(),
                 book3.getTitle(),
                 cartItem3.getQuantity()
         );
-
-        cartItemDtos = Map.of(1L, cartItemDto1, 2L, cartItemDto2, 3L, cartItemDto3);
-
+        Map<Long, CartItemDto> cartItemDtos = Map.of(
+                1L, cartItemDto1,
+                2L, cartItemDto2,
+                3L, cartItemDto3
+        );
         shoppingCart.setCartItems(new HashSet<>(cartItems.values()));
 
-        shoppingCartDto = new ShoppingCartDto(shoppingCart.getId(),
+        shoppingCartDto = new ShoppingCartDto(
+                shoppingCart.getId(),
                 shoppingCart.getUser().getId(),
-                new HashSet<>(cartItemDtos.values()));
+                new HashSet<>(cartItemDtos.values())
+        );
     }
 
     @Test
@@ -180,7 +181,8 @@ class ShoppingCartServiceImplTest {
     void getShoppingCart_WhenShoppingCartExistsForUser_ReturnShoppingCartDto() {
         final ShoppingCartDto expected = shoppingCartDto;
 
-        Mockito.when(shoppingCartMapper.toDto(shoppingCart)).thenReturn(shoppingCartDto);
+        Mockito.when(shoppingCartMapper.toDto(shoppingCart))
+                .thenReturn(shoppingCartDto);
         Mockito.when(shoppingCartRepository.findForCurrentUserWithCartItemsAndBooks())
                 .thenReturn(Optional.of(shoppingCart));
 
@@ -195,10 +197,12 @@ class ShoppingCartServiceImplTest {
     void getShoppingCart_WhenNoShoppingCartExistsForUser_CreateAndReturnShoppingCartDto() {
         final ShoppingCartDto expected = shoppingCartDto;
 
-        Mockito.when(shoppingCartMapper.toDto(shoppingCart)).thenReturn(shoppingCartDto);
+        Mockito.when(shoppingCartMapper.toDto(shoppingCart))
+                .thenReturn(shoppingCartDto);
         Mockito.when(shoppingCartRepository.findForCurrentUserWithCartItemsAndBooks())
                 .thenReturn(Optional.empty());
-        Mockito.when(userService.getAuthenticatedUser()).thenReturn(user);
+        Mockito.when(userService.getAuthenticatedUser())
+                .thenReturn(user);
         Mockito.when(shoppingCartRepository.save(ArgumentMatchers.any()))
                 .thenReturn(shoppingCart);
 
@@ -213,7 +217,7 @@ class ShoppingCartServiceImplTest {
     @DisplayName("addCartItem: When Book Exists in Cart, Update CartItem and Return CartItemDto")
     void addCartItem_WhenBookExistsInCart_UpdateCartItemAndReturnCartItemDto() {
         CartItem cartItem = cartItems.get(1L);
-        CartItemCreateRequestDto requestDto = new CartItemCreateRequestDto(
+        CartItemCreateDto requestDto = new CartItemCreateDto(
                 cartItem.getId(), 3);
         ShoppingCart mutableCart = new ShoppingCart();
         mutableCart.setId(1L);
@@ -231,12 +235,14 @@ class ShoppingCartServiceImplTest {
                 cartItem.getId(),
                 cartItem.getBook().getId(),
                 cartItem.getBook().getTitle(),
-                cartItem.getQuantity() + requestDto.quantity());
-
+                cartItem.getQuantity() + requestDto.quantity()
+        );
         Mockito.when(shoppingCartRepository.findForCurrentUserWithCartItemsAndBooks())
                 .thenReturn(Optional.of(mutableCart));
-        Mockito.when(cartItemRepository.save(mutableCartItem)).thenReturn(mutableCartItem);
-        Mockito.when(cartItemMapper.toDto(mutableCartItem)).thenReturn(expected);
+        Mockito.when(cartItemRepository.save(mutableCartItem))
+                .thenReturn(mutableCartItem);
+        Mockito.when(cartItemMapper.toDto(mutableCartItem))
+                .thenReturn(expected);
 
         CartItemDto actual = shoppingCartService.addCartItem(requestDto);
 
@@ -245,14 +251,13 @@ class ShoppingCartServiceImplTest {
         Mockito.verify(shoppingCartRepository, Mockito.times(1))
                 .findForCurrentUserWithCartItemsAndBooks();
         Mockito.verifyNoMoreInteractions(shoppingCartRepository);
-
     }
 
     @Test
     @DisplayName("addCartItem: When Book Does Not Exist in Cart, Return new CartItemDto")
     void addCartItem_WhenBookDoesNotExistInCart_CreateCartItemAndReturnCartItemDto() {
         CartItem cartItem = cartItems.get(1L);
-        CartItemCreateRequestDto requestDto = new CartItemCreateRequestDto(
+        CartItemCreateDto requestDto = new CartItemCreateDto(
                 cartItem.getId(), 3);
         ShoppingCart mutableCart = new ShoppingCart();
         mutableCart.setId(1L);
@@ -264,17 +269,18 @@ class ShoppingCartServiceImplTest {
                 requestDto.quantity(),
                 cartItem.isDeleted()
         );
-
         final CartItemDto expected = new CartItemDto(
                 cartItem.getId(),
                 cartItem.getBook().getId(),
                 cartItem.getBook().getTitle(),
-                requestDto.quantity());
-
+                requestDto.quantity()
+        );
         Mockito.when(shoppingCartRepository.findForCurrentUserWithCartItemsAndBooks())
                 .thenReturn(Optional.of(mutableCart));
-        Mockito.when(cartItemRepository.save(ArgumentMatchers.any())).thenReturn(mutableCartItem);
-        Mockito.when(cartItemMapper.toDto(mutableCartItem)).thenReturn(expected);
+        Mockito.when(cartItemRepository.save(ArgumentMatchers.any()))
+                .thenReturn(mutableCartItem);
+        Mockito.when(cartItemMapper.toDto(mutableCartItem))
+                .thenReturn(expected);
         Mockito.when(bookRepository.findById(requestDto.bookId()))
                 .thenReturn(Optional.of(cartItem.getBook()));
 
@@ -301,17 +307,19 @@ class ShoppingCartServiceImplTest {
         );
         shoppingCart.getCartItems().add(cartItem);
 
-        CartItemUpdateRequestDto request = new CartItemUpdateRequestDto(3);
+        CartItemUpdateDto request = new CartItemUpdateDto(3);
 
-        CartItemDto expected = new CartItemDto(cartItem.getId(),
+        final CartItemDto expected = new CartItemDto(cartItem.getId(),
                 cartItem.getBook().getId(),
                 cartItem.getBook().getTitle(),
-                request.quantity());
-
+                request.quantity()
+        );
         Mockito.when(cartItemRepository.findByIdForCurrentUser(cartItem.getId()))
                 .thenReturn(Optional.of(cartItem));
-        Mockito.when(cartItemRepository.save(cartItem)).thenReturn(cartItem);
-        Mockito.when(cartItemMapper.toDto(cartItem)).thenReturn(expected);
+        Mockito.when(cartItemRepository.save(cartItem))
+                .thenReturn(cartItem);
+        Mockito.when(cartItemMapper.toDto(cartItem))
+                .thenReturn(expected);
 
         CartItemDto actual = shoppingCartService.updateCartItem(cartItem.getId(), request);
 
@@ -324,13 +332,16 @@ class ShoppingCartServiceImplTest {
     @DisplayName("updateCartItem: When CartItem Does Not Exist, Throw EntityNotFoundException")
     void updateCartItem_WhenCartItemDoesNotExistForUser_ThrowEntityNotFoundException() {
         long id = -99L;
-        CartItemUpdateRequestDto request = new CartItemUpdateRequestDto(3);
+        CartItemUpdateDto request = new CartItemUpdateDto(3);
 
         EntityNotFoundException exception = Assertions.assertThrows(
                 EntityNotFoundException.class,
                 () -> shoppingCartService.updateCartItem(id, request));
 
-        Assertions.assertEquals("Can't find CartItem by id: " + id, exception.getMessage());
+        Assertions.assertEquals(
+                "Can't find CartItem by id: " + id,
+                exception.getMessage()
+        );
     }
 
     @TestFactory
@@ -360,11 +371,14 @@ class ShoppingCartServiceImplTest {
         Mockito.when(shoppingCartRepository.findForCurrentUserWithCartItemsAndBooks())
                 .thenReturn(Optional.of(shoppingCart));
 
-        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class,
-                () -> shoppingCartService.deleteCartItem(id));
-
-        Assertions.assertEquals("Can't find CartItem by id: " + id,
-                exception.getMessage());
+        EntityNotFoundException exception = Assertions.assertThrows(
+                EntityNotFoundException.class,
+                () -> shoppingCartService.deleteCartItem(id)
+        );
+        Assertions.assertEquals(
+                "Can't find CartItem by id: " + id,
+                exception.getMessage()
+        );
     }
 
     @Test

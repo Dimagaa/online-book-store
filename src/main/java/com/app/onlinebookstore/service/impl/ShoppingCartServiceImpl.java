@@ -1,10 +1,11 @@
 package com.app.onlinebookstore.service.impl;
 
-import com.app.onlinebookstore.dto.cartitem.CartItemCreateRequestDto;
+import com.app.onlinebookstore.dto.cartitem.CartItemCreateDto;
 import com.app.onlinebookstore.dto.cartitem.CartItemDto;
-import com.app.onlinebookstore.dto.cartitem.CartItemUpdateRequestDto;
+import com.app.onlinebookstore.dto.cartitem.CartItemUpdateDto;
 import com.app.onlinebookstore.dto.shoppingcart.ShoppingCartDto;
 import com.app.onlinebookstore.exception.EntityNotFoundException;
+import com.app.onlinebookstore.exception.EntityProcessingException;
 import com.app.onlinebookstore.mapper.CartItemMapper;
 import com.app.onlinebookstore.mapper.ShoppingCartMapper;
 import com.app.onlinebookstore.model.Book;
@@ -39,7 +40,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     @Transactional
-    public CartItemDto addCartItem(CartItemCreateRequestDto request) {
+    public CartItemDto addCartItem(CartItemCreateDto request) {
         ShoppingCart shoppingCart = findShoppingCartByAuthenticatedUser()
                 .orElseGet(this::createNewShoppingCart);
         CartItem cartItem = shoppingCart.getCartItems().stream()
@@ -52,7 +53,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     @Transactional
-    public CartItemDto updateCartItem(Long cartItemId, CartItemUpdateRequestDto request) {
+    public CartItemDto updateCartItem(Long cartItemId, CartItemUpdateDto request) {
         CartItem cartItem = cartItemRepository.findByIdForCurrentUser(cartItemId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Can't find CartItem by id: " + cartItemId
@@ -90,9 +91,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     private CartItem createNewCartItem(ShoppingCart shoppingCart,
-                                       CartItemCreateRequestDto request) {
+                                       CartItemCreateDto request) {
         Book book = bookRepository.findById(request.bookId())
-                .orElseThrow(() -> new EntityNotFoundException(
+                .orElseThrow(() -> new EntityProcessingException(
                         "Can't find Book by id: " + request.bookId()
                 ));
         return new CartItem(shoppingCart, book, request.quantity());
