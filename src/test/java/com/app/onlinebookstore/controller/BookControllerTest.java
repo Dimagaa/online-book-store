@@ -77,8 +77,8 @@ class BookControllerTest {
                 BigDecimal.valueOf(9.99),
                 "A classic novel",
                 "/book1.jpg",
-                Set.of(classic));
-
+                Set.of(classic)
+        );
         BookDto bookDto2 = new BookDto(2L,
                 "1984",
                 "George Orwell",
@@ -86,8 +86,8 @@ class BookControllerTest {
                 BigDecimal.valueOf(10.54),
                 "A dystopian novel",
                 "/book2.jpg",
-                Set.of(dystopian, additional));
-
+                Set.of(dystopian, additional)
+        );
         BookDto bookDto3 = new BookDto(3L,
                 "Pride and Prejudice",
                 "Jane Austen",
@@ -95,8 +95,8 @@ class BookControllerTest {
                 BigDecimal.valueOf(7.99),
                 "A romantic novel",
                 "/images/book3.jpg",
-                Set.of(romantic, additional));
-
+                Set.of(romantic, additional)
+        );
         responseDtos = Map.of(1L, bookDto1, 2L, bookDto2, 3L, bookDto3);
 
         BookWithoutCategoryIdsDto bookWithoutCategoryIdsDto1 = new BookWithoutCategoryIdsDto(
@@ -106,8 +106,8 @@ class BookControllerTest {
                 "9780061120084",
                 BigDecimal.valueOf(9.99),
                 "A classic novel",
-                "/book1.jpg");
-
+                "/book1.jpg"
+        );
         BookWithoutCategoryIdsDto bookWithoutCategoryIdsDto2 = new BookWithoutCategoryIdsDto(
                 2L,
                 "1984",
@@ -115,8 +115,8 @@ class BookControllerTest {
                 "9780451524935",
                 BigDecimal.valueOf(10.54),
                 "A dystopian novel",
-                "/book2.jpg");
-
+                "/book2.jpg"
+        );
         BookWithoutCategoryIdsDto bookWithoutCategoryIdsDto3 = new BookWithoutCategoryIdsDto(
                 3L,
                 "Pride and Prejudice",
@@ -124,14 +124,13 @@ class BookControllerTest {
                 "9780486284736",
                 BigDecimal.valueOf(7.99),
                 "A romantic novel",
-                "/images/book3.jpg");
-
+                "/images/book3.jpg"
+        );
         responseWithOutCategoriesDtos = Map.of(
                 1L, bookWithoutCategoryIdsDto1,
                 2L, bookWithoutCategoryIdsDto2,
                 3L, bookWithoutCategoryIdsDto3
         );
-
         CreateBookRequestDto createBookRequestDto1 = new CreateBookRequestDto(
                 "The Martian",
                 "Andy Weir",
@@ -140,8 +139,8 @@ class BookControllerTest {
                 "A science fiction novel about an astronaut "
                         + "stranded on Mars and his fight for survival.",
                 "https://www.example.com/images/book25.jpg",
-                Set.of(1L));
-
+                Set.of(1L)
+        );
         CreateBookRequestDto createBookRequestDto2 = new CreateBookRequestDto(
                 "Educated",
                 "Tara Westover",
@@ -150,8 +149,8 @@ class BookControllerTest {
                 "A memoir about a woman who grows up in a strict and"
                         + " abusive household but eventually escapes to earn a Ph.D.",
                 "https://www.example.com/images/book26.jpg",
-                Set.of(2L, 4L));
-
+                Set.of(2L, 4L)
+        );
         CreateBookRequestDto createBookRequestDto3 = new CreateBookRequestDto(
                 "The Nightingale",
                 "Kristin Hannah",
@@ -160,14 +159,13 @@ class BookControllerTest {
                 "A historical novel set in Nazi-occupied France,"
                         + "following the lives of two sisters and their struggle for survival.",
                 "https://www.example.com/images/book27.jpg",
-                Set.of(3L, 4L));
-
+                Set.of(3L, 4L)
+        );
         requestDtos = Map.of(
                 101L, createBookRequestDto1,
                 102L, createBookRequestDto2,
                 103L, createBookRequestDto3
         );
-
         BookDto createdBook1 = new BookDto(
                 101L,
                 "The Martian",
@@ -177,8 +175,8 @@ class BookControllerTest {
                 "A science fiction novel about an astronaut "
                         + "stranded on Mars and his fight for survival.",
                 "https://www.example.com/images/book25.jpg",
-                Set.of(1L));
-
+                Set.of(1L)
+        );
         BookDto createdBook2 = new BookDto(
                 102L,
                 "Educated",
@@ -188,8 +186,8 @@ class BookControllerTest {
                 "A memoir about a woman who grows up in a strict"
                         + " and abusive household but eventually escapes to earn a Ph.D.",
                 "https://www.example.com/images/book26.jpg",
-                Set.of(2L, 4L));
-
+                Set.of(2L, 4L)
+        );
         BookDto createdBook3 = new BookDto(
                 103L,
                 "The Nightingale",
@@ -199,8 +197,8 @@ class BookControllerTest {
                 "A historical novel set in Nazi-occupied France,"
                         + "following the lives of two sisters and their struggle for survival.",
                 "https://www.example.com/images/book27.jpg",
-                Set.of(3L, 4L));
-
+                Set.of(3L, 4L)
+        );
         createResponseDtos = Map.of(
                 101L, createdBook1,
                 102L, createdBook2,
@@ -211,6 +209,7 @@ class BookControllerTest {
     static void afterAll(@Autowired DataSource dataSource) {
         deleteData(dataSource);
     }
+
     @WithMockUser(username = "user")
     @SneakyThrows
     @Test
@@ -365,8 +364,8 @@ class BookControllerTest {
                 .map(id -> DynamicTest.dynamicTest(
                         "Delete by id: " + id,
                         () -> mockMvc.perform(MockMvcRequestBuilders
-                                        .delete("/books/" + id
-                                        ))
+                                        .delete("/books/" + id)
+                                )
                                 .andExpect(MockMvcResultMatchers
                                         .status()
                                         .isNoContent())
