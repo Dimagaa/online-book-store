@@ -2,7 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: insert-super-admin
       author: Dmytro Martyshchuk
-      labels: super-admin
+      labels: sAdmin
       changes:
         - insert:
             tableName: users
