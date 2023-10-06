@@ -4,9 +4,9 @@ import com.app.onlinebookstore.dto.book.BookDto;
 import com.app.onlinebookstore.dto.book.BookSearchParameters;
 import com.app.onlinebookstore.dto.book.BookWithoutCategoryIdsDto;
 import com.app.onlinebookstore.dto.book.CreateBookRequestDto;
-import com.app.onlinebookstore.exception.BookProcessingException;
 import com.app.onlinebookstore.exception.EntityAlreadyExistsException;
 import com.app.onlinebookstore.exception.EntityNotFoundException;
+import com.app.onlinebookstore.exception.EntityProcessingException;
 import com.app.onlinebookstore.mapper.BookMapper;
 import com.app.onlinebookstore.model.Book;
 import com.app.onlinebookstore.model.Category;
@@ -56,11 +56,26 @@ class BookServiceImplTest {
 
     @BeforeAll
     static void beforeAll() {
-        Category category1 = new Category(1L, "Classic novel", "A classic novel", false);
-        Category category2 = new Category(2L, "Dystopian novel", "A dystopian novel", false);
-        Category category3 = new Category(3L, "Romantic novel", "A romantic novel", false);
-        Category additional = new Category(4L, "Additional", "Additional category", false);
-
+        Category category1 = new Category(1L,
+                "Classic novel",
+                "A classic novel",
+                false
+        );
+        Category category2 = new Category(2L,
+                "Dystopian novel",
+                "A dystopian novel",
+                false
+        );
+        Category category3 = new Category(3L,
+                "Romantic novel",
+                "A romantic novel",
+                false
+        );
+        Category additional = new Category(4L,
+                "Additional",
+                "Additional category",
+                false
+        );
         Book book1 = new Book(1L,
                 "To Kill a Mockingbird",
                 "Harper Lee",
@@ -69,8 +84,8 @@ class BookServiceImplTest {
                 "A classic novel",
                 "/book1.jpg",
                 false,
-                Set.of(category1));
-
+                Set.of(category1)
+        );
         Book book2 = new Book(2L,
                 "1984",
                 "George Orwell",
@@ -79,8 +94,8 @@ class BookServiceImplTest {
                 "A dystopian novel",
                 "/book2.jpg",
                 false,
-                Set.of(category2, additional));
-
+                Set.of(category2, additional)
+        );
         Book book3 = new Book(3L,
                 "Pride and Prejudice",
                 "Jane Austen",
@@ -89,8 +104,8 @@ class BookServiceImplTest {
                 "A romantic novel",
                 "/images/book3.jpg",
                 false,
-                Set.of(category3, additional));
-
+                Set.of(category3, additional)
+        );
         books = Map.of(1L, book1, 2L, book2, 3L, book3);
 
         BookDto bookDto1 = new BookDto(1L,
@@ -100,7 +115,8 @@ class BookServiceImplTest {
                 BigDecimal.valueOf(9.99),
                 "A classic novel",
                 "/book1.jpg",
-                Set.of(1L));
+                Set.of(1L)
+        );
         BookDto bookDto2 = new BookDto(2L,
                 "1984",
                 "George Orwell",
@@ -108,8 +124,8 @@ class BookServiceImplTest {
                 BigDecimal.valueOf(10.50),
                 "A dystopian novel",
                 "/book2.jpg",
-                Set.of(2L, 4L));
-
+                Set.of(2L, 4L)
+        );
         BookDto bookDto3 = new BookDto(3L,
                 "Pride and Prejudice",
                 "Jane Austen",
@@ -117,8 +133,8 @@ class BookServiceImplTest {
                 BigDecimal.valueOf(7.99),
                 "A romantic novel",
                 "/images/book3.jpg",
-                Set.of(3L, 4L));
-
+                Set.of(3L, 4L)
+        );
         bookResponses = Map.of(1L, bookDto1, 2L, bookDto2, 3L, bookDto3);
 
         CreateBookRequestDto requestDto1 = new CreateBookRequestDto(
@@ -128,7 +144,8 @@ class BookServiceImplTest {
                 BigDecimal.valueOf(9.99),
                 "A classic novel",
                 "/book1.jpg",
-                Set.of(1L));
+                Set.of(1L)
+        );
         CreateBookRequestDto requestDto2 = new CreateBookRequestDto(
                 "1984",
                 "George Orwell",
@@ -136,8 +153,8 @@ class BookServiceImplTest {
                 BigDecimal.valueOf(10.50),
                 "A dystopian novel",
                 "/book2.jpg",
-                Set.of(2L, 4L));
-
+                Set.of(2L, 4L)
+        );
         CreateBookRequestDto requestDto3 = new CreateBookRequestDto(
                 "Pride and Prejudice",
                 "Jane Austen",
@@ -145,8 +162,8 @@ class BookServiceImplTest {
                 BigDecimal.valueOf(7.99),
                 "A romantic novel",
                 "/images/book3.jpg",
-                Set.of(3L, 4L));
-
+                Set.of(3L, 4L)
+        );
         bookRequests = Map.of(1L, requestDto1, 2L, requestDto2, 3L, requestDto3);
     }
 
@@ -198,8 +215,10 @@ class BookServiceImplTest {
         Mockito.when(bookRepository.findByIsbn(ArgumentMatchers.any()))
                 .thenReturn(Optional.empty());
 
-        Exception exception = Assertions.assertThrows(BookProcessingException.class,
-                () -> bookService.save(requestDto));
+        Exception exception = Assertions.assertThrows(
+                EntityProcessingException.class,
+                () -> bookService.save(requestDto)
+        );
         Assertions.assertEquals(
                 "Book processing failed. There are not categories with id: "
                         + book.getId(),
@@ -216,7 +235,7 @@ class BookServiceImplTest {
         Mockito.when(bookRepository.findAllWithCategories(PAGEABLE))
                 .thenReturn(books.values().stream().toList());
         books.values().forEach((book) -> Mockito.when(bookMapper.toDto(book))
-                        .thenReturn(bookResponses.get(book.getId())));
+                .thenReturn(bookResponses.get(book.getId())));
 
         List<BookDto> actual = bookService.findAll(PAGEABLE);
         actual.sort(Comparator.comparingLong(BookDto::id));
@@ -227,7 +246,8 @@ class BookServiceImplTest {
     @Test
     @DisplayName("findAll: When No Books Exist, Return Empty List")
     void findAll_WhenNoBooksExist_ReturnEmptyList() {
-        Mockito.when(bookRepository.findAllWithCategories(PAGEABLE)).thenReturn(List.of());
+        Mockito.when(bookRepository.findAllWithCategories(PAGEABLE))
+                .thenReturn(List.of());
 
         List<BookDto> actual = bookService.findAll(PAGEABLE);
 
@@ -253,8 +273,8 @@ class BookServiceImplTest {
                             Assertions.assertIterableEquals(
                                     expected.categories(), actual.categories()
                             );
-                        }
-                ));
+                        })
+                );
     }
 
     @Test
@@ -264,18 +284,22 @@ class BookServiceImplTest {
         Mockito.when(bookRepository.findByIdWithCategories(ArgumentMatchers.any()))
                 .thenReturn(Optional.empty());
 
-        Exception exception = Assertions.assertThrows(EntityNotFoundException.class,
-                () -> bookService.getById(id));
-
-        Assertions.assertEquals("Can't find book with id: " + id,
-                exception.getMessage());
+        Exception exception = Assertions.assertThrows(
+                EntityNotFoundException.class,
+                () -> bookService.getById(id)
+        );
+        Assertions.assertEquals(
+                "Can't find book with id: " + id,
+                exception.getMessage()
+        );
     }
 
     @TestFactory
     @DisplayName("update: When Book Exists, Update and Return BookDto")
     Stream<DynamicTest> update_WhenBookExists_UpdateAndReturnBookDto() {
         return bookRequests.entrySet().stream()
-                .map((entry) -> DynamicTest.dynamicTest("Update book by id: " + entry.getKey(),
+                .map((entry) -> DynamicTest.dynamicTest(
+                        "Update book by id: " + entry.getKey(),
                         () -> {
                             Long id = entry.getKey();
                             CreateBookRequestDto requestDto = entry.getValue();
@@ -284,7 +308,8 @@ class BookServiceImplTest {
 
                             Mockito.when(bookRepository.findById(id))
                                     .thenReturn(Optional.of(book));
-                            Mockito.when(bookMapper.toModel(requestDto)).thenReturn(book);
+                            Mockito.when(bookMapper.toModel(requestDto))
+                                    .thenReturn(book);
                             Mockito.when(categoryService.findAllById(requestDto.categories()))
                                     .thenReturn(book.getCategories());
                             Mockito.when(bookRepository.save(book)).thenReturn(book);
@@ -293,7 +318,8 @@ class BookServiceImplTest {
                             BookDto actual = bookService.update(id, requestDto);
 
                             Assertions.assertEquals(expected, actual);
-                        }));
+                        })
+                );
     }
 
     @Test
@@ -304,11 +330,14 @@ class BookServiceImplTest {
         Mockito.when(bookRepository.findById(ArgumentMatchers.any()))
                 .thenReturn(Optional.empty());
 
-        Exception exception = Assertions.assertThrows(EntityNotFoundException.class,
-                () -> bookService.update(id, requestDto));
-
-        Assertions.assertEquals("Can't update: Not found book with id: " + id,
-                exception.getMessage());
+        Exception exception = Assertions.assertThrows(
+                EntityNotFoundException.class,
+                () -> bookService.update(id, requestDto)
+        );
+        Assertions.assertEquals(
+                "Can't update: Not found book with id: " + id,
+                exception.getMessage()
+        );
     }
 
     @Test
@@ -321,9 +350,10 @@ class BookServiceImplTest {
                 .thenReturn(Optional.of(book));
         Mockito.when(bookMapper.toModel(requestDto)).thenReturn(book);
 
-        Exception exception = Assertions.assertThrows(BookProcessingException.class,
-                () -> bookService.update(book.getId(), requestDto));
-
+        Exception exception = Assertions.assertThrows(
+                EntityProcessingException.class,
+                () -> bookService.update(book.getId(), requestDto)
+        );
         Assertions.assertEquals(
                 "Book processing failed. There are not categories with id: "
                         + book.getId(),

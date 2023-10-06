@@ -42,22 +42,18 @@ class CategoryServiceImplTest {
 
     @BeforeAll
     static void beforeAll() {
-
         CategoryRequestDto requestDto1 = new CategoryRequestDto(
                 "Fantasy Adventure",
                 "Fantasy adventure books"
         );
-
         CategoryRequestDto requestDto2 = new CategoryRequestDto(
                 "Dystopian Fiction",
                 "Novels in a dystopian setting"
         );
-
         CategoryRequestDto requestDto3 = new CategoryRequestDto(
                 "Post-Apocalyptic",
                 "Fiction, Post-apocalyptic novels"
         );
-
         requestDtos = Map.of(1L, requestDto1, 2L, requestDto2, 3L, requestDto3);
 
         CategoryDto categoryDto1 = new CategoryDto(
@@ -101,15 +97,16 @@ class CategoryServiceImplTest {
     @Test
     @DisplayName("findAll: When Categories Exist, Return List of CategoryDtos")
     void findAll_WhenCategoriesExist_ReturnListOfCategoryDtos() {
-        List<CategoryDto> expected = categoryDtos.values().stream()
+        final List<CategoryDto> expected = categoryDtos.values().stream()
                 .sorted(Comparator.comparingLong(CategoryDto::id))
                 .toList();
 
         Mockito.when(categoryRepository.findAll())
                 .thenReturn(categories.values().stream().toList());
-        categories.values().forEach(category -> Mockito.when(categoryMapper.toDto(category))
-                .thenReturn(categoryDtos.get(category.getId())));
-
+        categories.values().forEach(
+                category -> Mockito.when(categoryMapper.toDto(category))
+                        .thenReturn(categoryDtos.get(category.getId()))
+        );
         List<CategoryDto> actual = categoryService.findAll(PAGEABLE)
                 .stream()
                 .sorted(Comparator.comparingLong(CategoryDto::id))
@@ -187,12 +184,13 @@ class CategoryServiceImplTest {
 
         EntityAlreadyExistsException exception = Assertions.assertThrows(
                 EntityAlreadyExistsException.class,
-                () -> categoryService.save(request));
-
-        Assertions.assertEquals("Category already exists by name: " + category.getName()
+                () -> categoryService.save(request)
+        );
+        Assertions.assertEquals(
+                "Category already exists by name: " + category.getName()
                         + ", category id: " + category.getId(),
-                exception.getMessage());
-
+                exception.getMessage()
+        );
     }
 
     @TestFactory
@@ -216,7 +214,6 @@ class CategoryServiceImplTest {
                             Assertions.assertEquals(expected, actual);
                         }
                 ));
-
     }
 
     @Test
@@ -279,7 +276,7 @@ class CategoryServiceImplTest {
     @Test
     @DisplayName("findAllById: When Valid Category IDs, Return Set of Categories")
     void findAllById_WhenValidCategoryIDs_ReturnSetOfCategories() {
-        Set<Category> expected = new HashSet<>(categories.values());
+        final Set<Category> expected = new HashSet<>(categories.values());
         Mockito.when(categoryRepository.findAllById(categories.keySet()))
                 .thenReturn(categories.values().stream().toList());
 

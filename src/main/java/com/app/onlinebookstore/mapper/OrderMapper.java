@@ -3,7 +3,7 @@ package com.app.onlinebookstore.mapper;
 import com.app.onlinebookstore.config.MapperConfig;
 import com.app.onlinebookstore.dto.order.OrderDto;
 import com.app.onlinebookstore.dto.order.OrderPlaceRequestDto;
-import com.app.onlinebookstore.exception.OrderProcessingException;
+import com.app.onlinebookstore.exception.EntityProcessingException;
 import com.app.onlinebookstore.model.Order;
 import com.app.onlinebookstore.model.OrderItem;
 import com.app.onlinebookstore.model.ShoppingCart;
@@ -34,7 +34,7 @@ public interface OrderMapper {
                 .reduce(BigDecimal::add)
                 .ifPresentOrElse(order::setTotal,
                         () -> {
-                            throw new OrderProcessingException(
+                            throw new EntityProcessingException(
                                     "Invalid order items were provided");
                         });
     }

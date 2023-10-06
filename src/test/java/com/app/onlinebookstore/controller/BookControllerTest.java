@@ -40,6 +40,14 @@ import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BookControllerTest {
     protected static MockMvc mockMvc;
+    private static final String INSERT_IMMUTABLE_BOOKS_AND_CATEGORIES_SQL =
+            "sql-scripts/books/InsertImmutableBooksAndCategories.sql";
+    private static final String DELETE_IMMUTABLE_BOOKS_AND_CATEGORIES_SQL =
+            "sql-scripts/books/DeleteImmutableBooksAndCategories.sql";
+    private static final String INSERT_MUTABLE_BOOKS_SQL =
+            "classpath:sql-scripts/books/InsertMutableBooks.sql";
+    private static final String DELETE_MUTABLE_BOOKS_SQL =
+            "classpath:sql-scripts/books/DeleteMutableBooks.sql";
     private static Map<Long, BookDto> responseDtos;
     private static Map<Long, BookWithoutCategoryIdsDto> responseWithOutCategoriesDtos;
     private static Map<Long, CreateBookRequestDto> requestDtos;
@@ -69,8 +77,8 @@ class BookControllerTest {
                 BigDecimal.valueOf(9.99),
                 "A classic novel",
                 "/book1.jpg",
-                Set.of(classic));
-
+                Set.of(classic)
+        );
         BookDto bookDto2 = new BookDto(2L,
                 "1984",
                 "George Orwell",
@@ -78,8 +86,8 @@ class BookControllerTest {
                 BigDecimal.valueOf(10.54),
                 "A dystopian novel",
                 "/book2.jpg",
-                Set.of(dystopian, additional));
-
+                Set.of(dystopian, additional)
+        );
         BookDto bookDto3 = new BookDto(3L,
                 "Pride and Prejudice",
                 "Jane Austen",
@@ -87,8 +95,8 @@ class BookControllerTest {
                 BigDecimal.valueOf(7.99),
                 "A romantic novel",
                 "/images/book3.jpg",
-                Set.of(romantic, additional));
-
+                Set.of(romantic, additional)
+        );
         responseDtos = Map.of(1L, bookDto1, 2L, bookDto2, 3L, bookDto3);
 
         BookWithoutCategoryIdsDto bookWithoutCategoryIdsDto1 = new BookWithoutCategoryIdsDto(
@@ -98,8 +106,8 @@ class BookControllerTest {
                 "9780061120084",
                 BigDecimal.valueOf(9.99),
                 "A classic novel",
-                "/book1.jpg");
-
+                "/book1.jpg"
+        );
         BookWithoutCategoryIdsDto bookWithoutCategoryIdsDto2 = new BookWithoutCategoryIdsDto(
                 2L,
                 "1984",
@@ -107,8 +115,8 @@ class BookControllerTest {
                 "9780451524935",
                 BigDecimal.valueOf(10.54),
                 "A dystopian novel",
-                "/book2.jpg");
-
+                "/book2.jpg"
+        );
         BookWithoutCategoryIdsDto bookWithoutCategoryIdsDto3 = new BookWithoutCategoryIdsDto(
                 3L,
                 "Pride and Prejudice",
@@ -116,14 +124,13 @@ class BookControllerTest {
                 "9780486284736",
                 BigDecimal.valueOf(7.99),
                 "A romantic novel",
-                "/images/book3.jpg");
-
+                "/images/book3.jpg"
+        );
         responseWithOutCategoriesDtos = Map.of(
                 1L, bookWithoutCategoryIdsDto1,
                 2L, bookWithoutCategoryIdsDto2,
                 3L, bookWithoutCategoryIdsDto3
         );
-
         CreateBookRequestDto createBookRequestDto1 = new CreateBookRequestDto(
                 "The Martian",
                 "Andy Weir",
@@ -132,8 +139,8 @@ class BookControllerTest {
                 "A science fiction novel about an astronaut "
                         + "stranded on Mars and his fight for survival.",
                 "https://www.example.com/images/book25.jpg",
-                Set.of(1L));
-
+                Set.of(1L)
+        );
         CreateBookRequestDto createBookRequestDto2 = new CreateBookRequestDto(
                 "Educated",
                 "Tara Westover",
@@ -142,8 +149,8 @@ class BookControllerTest {
                 "A memoir about a woman who grows up in a strict and"
                         + " abusive household but eventually escapes to earn a Ph.D.",
                 "https://www.example.com/images/book26.jpg",
-                Set.of(2L, 4L));
-
+                Set.of(2L, 4L)
+        );
         CreateBookRequestDto createBookRequestDto3 = new CreateBookRequestDto(
                 "The Nightingale",
                 "Kristin Hannah",
@@ -152,14 +159,13 @@ class BookControllerTest {
                 "A historical novel set in Nazi-occupied France,"
                         + "following the lives of two sisters and their struggle for survival.",
                 "https://www.example.com/images/book27.jpg",
-                Set.of(3L, 4L));
-
+                Set.of(3L, 4L)
+        );
         requestDtos = Map.of(
                 101L, createBookRequestDto1,
                 102L, createBookRequestDto2,
                 103L, createBookRequestDto3
         );
-
         BookDto createdBook1 = new BookDto(
                 101L,
                 "The Martian",
@@ -169,8 +175,8 @@ class BookControllerTest {
                 "A science fiction novel about an astronaut "
                         + "stranded on Mars and his fight for survival.",
                 "https://www.example.com/images/book25.jpg",
-                Set.of(1L));
-
+                Set.of(1L)
+        );
         BookDto createdBook2 = new BookDto(
                 102L,
                 "Educated",
@@ -180,8 +186,8 @@ class BookControllerTest {
                 "A memoir about a woman who grows up in a strict"
                         + " and abusive household but eventually escapes to earn a Ph.D.",
                 "https://www.example.com/images/book26.jpg",
-                Set.of(2L, 4L));
-
+                Set.of(2L, 4L)
+        );
         BookDto createdBook3 = new BookDto(
                 103L,
                 "The Nightingale",
@@ -191,8 +197,8 @@ class BookControllerTest {
                 "A historical novel set in Nazi-occupied France,"
                         + "following the lives of two sisters and their struggle for survival.",
                 "https://www.example.com/images/book27.jpg",
-                Set.of(3L, 4L));
-
+                Set.of(3L, 4L)
+        );
         createResponseDtos = Map.of(
                 101L, createdBook1,
                 102L, createdBook2,
@@ -204,7 +210,7 @@ class BookControllerTest {
         deleteData(dataSource);
     }
 
-    @WithMockUser(username = "user", roles = {"USER"})
+    @WithMockUser(username = "user")
     @SneakyThrows
     @Test
     @DisplayName("getAll: When Books Exist, Return List of BookDtos")
@@ -228,7 +234,7 @@ class BookControllerTest {
         Assertions.assertEquals(expected, actual);
     }
 
-    @WithMockUser(username = "user", roles = {"USER"})
+    @WithMockUser(username = "user")
     @TestFactory
     @DisplayName("getById: When Book Exists, Return BookDto")
     Stream<DynamicTest> getById_WhenBookExists_ReturnBookDto() {
@@ -253,7 +259,7 @@ class BookControllerTest {
 
     }
 
-    @WithMockUser(username = "user", roles = {"USER"})
+    @WithMockUser(username = "user")
     @SneakyThrows
     @Test
     @DisplayName("getById: When Book Does Not Exist, Return 404 NotFound")
@@ -270,7 +276,7 @@ class BookControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @TestFactory
     @DisplayName("create: When Valid Book Request, Return Created BookDto")
-    @Sql(scripts = "classpath:sql-scripts/books/DeleteMutable.sql",
+    @Sql(scripts = DELETE_MUTABLE_BOOKS_SQL,
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     Stream<DynamicTest> create_WhenValidBookRequest_ReturnCreatedBookDto() {
         return requestDtos.entrySet().stream()
@@ -302,9 +308,9 @@ class BookControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @TestFactory
     @DisplayName("update: When Valid Book Request and Book Exists, Return Updated BookDto")
-    @Sql(scripts = "classpath:sql-scripts/books/InsertMutableBooks.sql",
+    @Sql(scripts = INSERT_MUTABLE_BOOKS_SQL,
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:sql-scripts/books/DeleteMutable.sql",
+    @Sql(scripts = DELETE_MUTABLE_BOOKS_SQL,
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     Stream<DynamicTest> update_WhenValidBookRequestAndBookExists_ReturnUpdatedBookDto() {
         return requestDtos.entrySet().stream()
@@ -331,7 +337,8 @@ class BookControllerTest {
 
                             Assertions.assertEquals(expected, actual);
                             Assertions.assertEquals(expected.categories(), actual.categories());
-                        }));
+                        })
+                );
     }
 
     @WithMockUser(username = "admin", roles = {"ADMIN"})
@@ -350,15 +357,15 @@ class BookControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @TestFactory
     @DisplayName("deleteById: When Book Exists, Return 204 NoContent")
-    @Sql(scripts = "classpath:sql-scripts/books/InsertMutableBooks.sql",
+    @Sql(scripts = INSERT_MUTABLE_BOOKS_SQL,
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     Stream<DynamicTest> deleteById_WhenBookExists_Return204NoContent() {
         return requestDtos.keySet().stream()
                 .map(id -> DynamicTest.dynamicTest(
                         "Delete by id: " + id,
                         () -> mockMvc.perform(MockMvcRequestBuilders
-                                        .delete("/books/" + id
-                                        ))
+                                        .delete("/books/" + id)
+                                )
                                 .andExpect(MockMvcResultMatchers
                                         .status()
                                         .isNoContent())
@@ -376,7 +383,7 @@ class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
-    @WithMockUser(username = "user", roles = {"USER"})
+    @WithMockUser(username = "user")
     @Test
     @DisplayName("search: When Books Match Search Criteria, Return List of BookDtos")
     void search_WhenBooksMatchSearchCriteria_ReturnListOfBookDtos() throws Exception {
@@ -438,7 +445,7 @@ class BookControllerTest {
     private static void insertData(DataSource dataSource) {
         try (Connection connection = dataSource.getConnection()) {
             ScriptUtils.executeSqlScript(connection, new ClassPathResource(
-                    "sql-scripts/books/InsertImmutableBooks.sql"
+                    INSERT_IMMUTABLE_BOOKS_AND_CATEGORIES_SQL
             ));
         }
     }
@@ -447,7 +454,7 @@ class BookControllerTest {
     private static void deleteData(DataSource dataSource) {
         try (Connection connection = dataSource.getConnection()) {
             ScriptUtils.executeSqlScript(connection, new ClassPathResource(
-                    "sql-scripts/books/DeleteImmutableBooksWithCategories.sql"
+                    DELETE_IMMUTABLE_BOOKS_AND_CATEGORIES_SQL
             ));
         }
     }

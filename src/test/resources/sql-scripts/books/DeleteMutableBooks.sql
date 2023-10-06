@@ -1,0 +1,7 @@
+DELETE bc
+FROM books_categories bc
+         JOIN books b ON bc.book_id = b.id
+WHERE b.isbn IN ('9780553418026', '9780399590504', '9780312577223');
+DELETE
+FROM books
+WHERE isbn IN ('9780553418026', '9780399590504', '9780312577223');

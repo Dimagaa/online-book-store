@@ -1,8 +1,8 @@
 package com.app.onlinebookstore.controller;
 
-import com.app.onlinebookstore.dto.cartitem.CartItemCreateRequestDto;
+import com.app.onlinebookstore.dto.cartitem.CartItemCreateDto;
 import com.app.onlinebookstore.dto.cartitem.CartItemDto;
-import com.app.onlinebookstore.dto.cartitem.CartItemUpdateRequestDto;
+import com.app.onlinebookstore.dto.cartitem.CartItemUpdateDto;
 import com.app.onlinebookstore.dto.shoppingcart.ShoppingCartDto;
 import com.app.onlinebookstore.service.ShoppingCartService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,7 +44,8 @@ public class ShoppingCartController {
     )
     @PreAuthorize("hasRole('USER')")
     @PostMapping
-    public CartItemDto addCartItem(@RequestBody @Valid CartItemCreateRequestDto request) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public CartItemDto addCartItem(@RequestBody @Valid CartItemCreateDto request) {
         return shoppingCartService.addCartItem(request);
     }
 
@@ -55,7 +56,7 @@ public class ShoppingCartController {
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/cart-items/{cartItemId}")
     public CartItemDto updateCartItem(@PathVariable Long cartItemId,
-                               @RequestBody @Valid CartItemUpdateRequestDto request) {
+                               @RequestBody @Valid CartItemUpdateDto request) {
         return shoppingCartService.updateCartItem(cartItemId, request);
     }
 

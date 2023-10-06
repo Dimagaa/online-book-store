@@ -1,23 +1,8 @@
 databaseChangeLog:
   - changeSet:
-      id: insert-roles
-      author: Dmytro Martyshchuk
-      changes:
-        - insert:
-            tableName: roles
-            columns:
-              - column:
-                  name: name
-                  value: ROLE_USER
-        - insert:
-            tableName: roles
-            columns:
-              - column:
-                  name: name
-                  value: ROLE_ADMIN
-  - changeSet:
       id: insert-super-admin
       author: Dmytro Martyshchuk
+      labels: super-admin
       changes:
         - insert:
             tableName: users
