@@ -441,7 +441,7 @@ header for protected routes.
             "isbn": "9780385121675",
             "price": 29.99,
             "description": "Jack and his family move into an isolated hotel with a violent past. Living in isolation, Jack begins to lose his sanity, which affects his family members",
-            "coverImage": "http://example.com/cover3.jpg",
+            "coverImage": "https://example.com/cover3.jpg",
             "categories": [
                 "2", "1"
             ]
@@ -460,7 +460,7 @@ header for protected routes.
               "isbn": "9780385121675",
               "price": 29.99,
               "description": "Jack and his family move into an isolated hotel with a violent past. Living in isolation, Jack begins to lose his sanity, which affects his family members",
-              "coverImage": "http://example.com/cover3.jpg",
+              "coverImage": "https://example.com/cover3.jpg",
               "categories": [
                   1,
                   2
@@ -481,7 +481,7 @@ header for protected routes.
             "isbn": "9780385121675",
             "price": 29.99,
             "description": "Jack and his family move into an isolated hotel with a violent past. Living in isolation, Jack begins to lose his sanity, which affects his family members",
-            "coverImage": "http://example.com/cover3.jpg",
+            "coverImage": "https://example.com/cover3.jpg",
             "categories": [
                 "2"
             ]
@@ -500,7 +500,7 @@ header for protected routes.
               "isbn": "9780385121675",
               "price": 29.99,
               "description": "Jack and his family move into an isolated hotel with a violent past. Living in isolation, Jack begins to lose his sanity, which affects his family members",
-              "coverImage": "http://example.com/cover3.jpg",
+              "coverImage": "https://example.com/cover3.jpg",
               "categories": [
                   2
               ]
@@ -717,4 +717,8 @@ rollback strategies in place.
 By addressing these challenges, we enhanced the reliability, security, and maintainability of our Online Book Store
 project.
 
+### Contributions
+
+We welcome contributions from the community to help enhance and improve the Online Book Store project. Whether you're
+interested in fixing bugs, adding new features, or improving documentation, your contributions are valuable.
 ---
