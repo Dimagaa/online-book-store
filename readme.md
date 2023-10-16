@@ -18,11 +18,15 @@ tools for managers to organize and monitor the store.
 - **Liquibase:** Library for tracking, managing, and applying database schema changes.
 - **Docker:** A platform for delivering software in containers.
 
+## Video Presentation
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/je94b48P8GA/0.jpg)](https://youtu.be/je94b48P8GA?si=BjrNyUUWF0zb-knZ)
+
 ## Functionalities
 
 ### Shoppers (User)
 
-### Authentication:
+#### Authentication:
 
 The API uses token-based authentication. You must obtain a JSON Web Token (JWT) and include it in the Authorization
 header for protected routes.
@@ -82,7 +86,7 @@ header for protected routes.
         }
         ```
 
-### Browsing Books and Categories
+#### Browsing Books and Categories
 
 - **Browse All Books**:
     - **Endpoint**: `/books`
@@ -215,7 +219,7 @@ header for protected routes.
         - **Status Code**: 200 OK
         - **Response Body**: (Example JSON response body is the same as the "Browse All Books" endpoint.)
 
-### Shopping Cart
+#### Shopping Cart
 
 - **Add New Cart Item**:
     - **Endpoint**: `/cart`
@@ -306,7 +310,7 @@ header for protected routes.
           }
           ```
 
-### Order
+#### Order
 
 - **Place an Order**:
     - **Endpoint**: `/orders`
@@ -426,7 +430,7 @@ header for protected routes.
 
 ### Managers (Admin)
 
-### Book Management
+#### Book Management
 
 - **Create a New Book**:
     - **Endpoint**: `/books`
@@ -515,7 +519,7 @@ header for protected routes.
     - **Response**:
         - **Status Code**: 204 No Content
 
-### Category Management
+#### Category Management
 
 - **Create a New Category**:
     - **Endpoint**: `/categories`
@@ -575,7 +579,7 @@ header for protected routes.
     - **Response**:
         - **Status Code**: 204 No Content
 
-### Order Management
+#### Order Management
 
 - **Update Order Status**:
     - **Endpoint**: `/orders/{order_id}`
