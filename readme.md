@@ -783,7 +783,7 @@ To access the preloaded data, use the following credentials:
     - Swagger Documentation URL: [Swagger Documentation](http://localhost:<PORT>/api/swagger-ui/index.html#/)
 
 6. Alternatively, you can use Postman for API
-   testing: [Online Book Store Postman Collection](https://www.postman.com/flight-geoscientist-49978449/workspace/online-book-store/overview).
+   testing: [Online Book Store Postman Collection](https://www.postman.com/lively-spaceship-141404/workspace/online-book-store).
 
 ## Challenges and Solutions
 
