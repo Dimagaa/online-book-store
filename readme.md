@@ -31,29 +31,36 @@ tools for managers to organize and monitor the store.
 The API uses token-based authentication. You must obtain a JSON Web Token (JWT) and include it in the Authorization
 header for protected routes.
 
-- **Login**:
-    - **Endpoint**: `/auth/login`
-  
-    - **Request**:
-        - **Method**: POST
-        - **Request Body**:
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold"> Login</summary>
 
-      ```json
-      {
-        "email": "user@example.com",
-        "password": "YourPassword123"
-      }
-      ```
+- **Endpoint**: `/auth/login`
 
-  - **Response**:
-      - **Status Code**: 200 OK
-      - **Response Body**:
+- **Request**:
+    - **Method**: POST
+    - **Request Body**:
 
-      ```json
-      {
-        "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzQWRtaW5AYm9vay5zdG9yZSIsImlhdCI6MTY5NzM2NzUxMSwiZXhwIjoxNjk3MzN6k7y0DAqdLpVj2-F2R4Nxst52CMHsADscIKQ9gqKrXHRBhew"
-      }
-      ```
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "YourPassword123"
+  }
+  ```
+
+- **Response**:
+    - **Status Code**: 200 OK
+    - **Response Body**:
+
+    ```json
+    {
+      "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzQWRtaW5AYm9vay5zdG9yZSIsImlhdCI6MTY5NzM2NzUxMSwiZXhwIjoxNjk3MzN6k7y0DAqdLpVj2-F2R4Nxst52CMHsADscIKQ9gqKrXHRBhew"
+    }
+    ```
+
+</details>
+
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold"> Register</summary>
 
 - **Register**:
     - **Endpoint**: `/auth/register`
@@ -86,16 +93,20 @@ header for protected routes.
         }
         ```
 
+</details>
+
 #### Browsing Books and Categories
 
-- **Browse All Books**:
-    - **Endpoint**: `/books`
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold"> Browse All Books</summary>
+
+- **Endpoint**: `/books`
     - **Request**:
-        - **Method**: GET
-        - **Request Params**:
-            - `page` (optional): The page number for pagination.
-            - `size` (optional): The number of items per page.
-            - `sort` (optional): Sorting criteria.
+    - **Method**: GET
+    - **Request Params**:
+        - `page` (optional): The page number for pagination.
+        - `size` (optional): The number of items per page.
+        - `sort` (optional): Sorting criteria.
 
     - **Response**:
         - **Status Code**: 200 OK
@@ -126,493 +137,565 @@ header for protected routes.
           ]
           ```
 
-- **View Book Details**:
-    - **Endpoint**: `/books/{id}`
-    - **Request**:
-        - **Method**: GET
+</details>
 
-    - **Response**:
-        - **Status Code**: 200 OK
-        - **Response Body**:
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold"> View Book Details</summary>
 
-          ```json
-          {
-              "id": 1,
-              "title": "To Kill a Mockingbird",
-              "author": "Harper Lee",
-              "isbn": "9780061120084",
-              "price": 9.99,
-              "description": "A classic novel that explores themes of racial injustice and moral growth in the American South.",
-              "coverImage": "https://www.example.com/images/book1.jpg",
-              "categories": [16, 26, 12]
-          }
-          ```
+- **Endpoint**: `/books/{id}`
+- **Request**:
+    - **Method**: GET
 
-- **Search for Books**:
-    - **Endpoint**: `/books/search?title={title}&author={author}&isbn={isbn}`
-    - **Request**:
-        - **Method**: GET
-        - **Request Params**:
-            - `title` (optional): The title of the book to search for.
-            - `author` (optional): The author of the book to search for.
-            - `isbn` (optional): The ISBN of the book to search for.
-            - `sort` (optional): Sorting criteria.
-            - `page` (optional): The page number for pagination.
-            - `size` (optional): The number of items per page.
+- **Response**:
+    - **Status Code**: 200 OK
+    - **Response Body**:
 
-    - **Response**:
-        - **Status Code**: 200 OK
-        - **Response Body**: (Example JSON response body is the same as the "Browse All Books" endpoint.)
+      ```json
+      {
+          "id": 1,
+          "title": "To Kill a Mockingbird",
+          "author": "Harper Lee",
+          "isbn": "9780061120084",
+          "price": 9.99,
+          "description": "A classic novel that explores themes of racial injustice and moral growth in the American South.",
+          "coverImage": "https://www.example.com/images/book1.jpg",
+          "categories": [16, 26, 12]
+      }
+      ```
 
-- **Browse Bookshelf Sections**:
-    - **Endpoint**: `/categories`
-    - **Request**:
-        - **Method**: GET
+</details>
 
-    - **Response**:
-        - **Status Code**: 200 OK
-        - **Response Body**:
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold"> Search for Books</summary>
 
-          ```json
-          [
-              {
-                  "id": 1,
-                  "name": "Fantasy Adventure",
-                  "description": "Fantasy adventure books"
-              },
-              {
-                  "id": 2,
-                  "name": "Dystopian Fiction",
-                  "description": "Novels in a dystopian setting"
-              },
-              {
-                  "id": 3,
-                  "name": "Post-Apocalyptic Fiction",
-                  "description": "Post-apocalyptic novels"
-              }
-          ]
-          ```
+- **Endpoint**: `/books/search?title={title}&author={author}&isbn={isbn}`
+- **Request**:
+    - **Method**: GET
+    - **Request Params**:
+        - `title` (optional): The title of the book to search for.
+        - `author` (optional): The author of the book to search for.
+        - `isbn` (optional): The ISBN of the book to search for.
+        - `sort` (optional): Sorting criteria.
+        - `page` (optional): The page number for pagination.
+        - `size` (optional): The number of items per page.
 
-- **Get Category by ID**:
-    - **Endpoint**: `/categories/{id}`
-    - **Request**:
-        - **Method**: GET
+- **Response**:
+    - **Status Code**: 200 OK
+    - **Response Body**: (Example JSON response body is the same as the "Browse All Books" endpoint.)
 
-    - **Response**:
-        - **Status Code**: 200 OK
-        - **Response Body**:
+</details>
 
-          ```json
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold"> Browse Bookshelf Sections</summary>
+
+- **Endpoint**: `/categories`
+- **Request**:
+    - **Method**: GET
+- **Response**:
+    - **Status Code**: 200 OK
+    - **Response Body**:
+
+      ```json
+      [
           {
               "id": 1,
               "name": "Fantasy Adventure",
               "description": "Fantasy adventure books"
+          },
+          {
+              "id": 2,
+              "name": "Dystopian Fiction",
+              "description": "Novels in a dystopian setting"
+          },
+          {
+              "id": 3,
+              "name": "Post-Apocalyptic Fiction",
+              "description": "Post-apocalyptic novels"
           }
-          ```
+      ]
+      ```
 
-- **Get Books by Category ID**:
-    - **Endpoint**: `/categories/{id}/books`
-    - **Request**:
-        - **Method**: GET
+</details>
 
-    - **Response**:
-        - **Status Code**: 200 OK
-        - **Response Body**: (Example JSON response body is the same as the "Browse All Books" endpoint.)
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold">Get Category by ID</summary>
+
+- **Endpoint**: `/categories/{id}`
+- **Request**:
+    - **Method**: GET
+
+- **Response**:
+    - **Status Code**: 200 OK
+    - **Response Body**:
+
+    ```json
+    {
+        "id": 1,
+        "name": "Fantasy Adventure",
+        "description": "Fantasy adventure books"
+    }
+    ```
+
+</details>
+
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold">Get Books by Category ID</summary>
+
+- **Endpoint**: `/categories/{id}/books`
+- **Request**:
+    - **Method**: GET
+
+- **Response**:
+    - **Status Code**: 200 OK
+    - **Response Body**: (Example JSON response body is the same as the "Browse All Books" endpoint.)
+
+</details>
 
 #### Shopping Cart
 
-- **Add New Cart Item**:
-    - **Endpoint**: `/cart`
-    - **Request**:
-        - **Method**: POST
-        - **Request Body**:
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold">Add New Cart Item</summary>
 
-          ```json
-          {
-              "bookId": "3",
-              "quantity": "2"
-          }
-          ```
+- **Endpoint**: `/cart`
+- **Request**:
+    - **Method**: POST
+    - **Request Body**:
 
-    - **Response**:
-        - **Status Code**: 201 Created
-        - **Response Body**:
+    ```json
+    {
+        "bookId": "3",
+        "quantity": "2"
+    }
+    ```
 
-          ```json
-          {
-              "id": 1,
-              "bookId": 3,
-              "bookTitle": "Pride and Prejudice",
-              "quantity": 2
-          }
-          ```
+- **Response**:
+    - **Status Code**: 201 Created
+    - **Response Body**:
 
-- **Update Cart Item**:
-    - **Endpoint**: `/cart/cart-items/{id}`
-    - **Request**:
-        - **Method**: PUT
-        - **Request Body**:
+    ```json
+    {
+        "id": 1,
+        "bookId": 3,
+        "bookTitle": "Pride and Prejudice",
+        "quantity": 2
+    }
+    ```
 
-          ```json
-          {
-              "quantity": "1"
-          }
-          ```
+</details>
 
-    - **Response**:
-        - **Status Code**: 200 OK
-        - **Response Body**:
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold">Update Cart Item</summary>
 
-          ```json
-          {
-              "id": 1,
-              "bookId": 3,
-              "bookTitle": "Pride and Prejudice",
-              "quantity": 1
-          }
-          ```
+- **Endpoint**: `/cart/cart-items/{id}`
+- **Request**:
+    - **Method**: PUT
+    - **Request Body**:
 
-- **Delete Cart Item**:
-    - **Endpoint**: `/cart-items/{id}`
-    - **Request**:
-        - **Method**: DELETE
+    ```json
+    {
+        "quantity": "1"
+    }
+    ```
 
-    - **Response**:
-        - **Status Code**: 204 No Content
+- **Response**:
+    - **Status Code**: 200 OK
+    - **Response Body**:
 
-- **Get Shopping Cart**:
-    - **Endpoint**: `/cart`
-    - **Request**:
-        - **Method**: GET
+    ```json
+    {
+        "id": 1,
+        "bookId": 3,
+        "bookTitle": "Pride and Prejudice",
+        "quantity": 1
+    }
+    ```
 
-    - **Response**:
-        - **Status Code**: 200 OK
-        - **Response Body**:
+</details>
 
-          ```json
-          {
-              "id": 1,
-              "userId": 3,
-              "cartItems": [
-                  {
-                      "id": 3,
-                      "bookId": 5,
-                      "bookTitle": "To the Lighthouse",
-                      "quantity": 2
-                  },
-                  {
-                      "id": 2,
-                      "bookId": 3,
-                      "bookTitle": "Pride and Prejudice",
-                      "quantity": 2
-                  }
-              ]
-          }
-          ```
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold">Delete Cart Item</summary>
+
+- **Endpoint**: `/cart-items/{id}`
+- **Request**:
+    - **Method**: DELETE
+
+- **Response**:
+    - **Status Code**: 204 No Content
+
+</details>
+
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold">Get Shopping Cart</summary>
+
+- **Endpoint**: `/cart`
+- **Request**:
+    - **Method**: GET
+
+- **Response**:
+    - **Status Code**: 200 OK
+    - **Response Body**:
+
+    ```json
+    {
+        "id": 1,
+        "userId": 3,
+        "cartItems": [
+            {
+                "id": 3,
+                "bookId": 5,
+                "bookTitle": "To the Lighthouse",
+                "quantity": 2
+            },
+            {
+                "id": 2,
+                "bookId": 3,
+                "bookTitle": "Pride and Prejudice",
+                "quantity": 2
+            }
+        ]
+    }
+    ```
+
+</details>
 
 #### Order
 
-- **Place an Order**:
-    - **Endpoint**: `/orders`
-    - **Request**:
-        - **Method**: POST
-        - **Request Body**:
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold">Place an Order</summary>
 
-          ```json
-          {
-              "shippingAddress": "JS6740023 Chicago, USA"
-          }
-          ```
+- **Endpoint**: `/orders`
+- **Request**:
+    - **Method**: POST
+    - **Request Body**:
 
-    - **Response**:
-        - **Status Code**: 200 OK
-        - **Response Body**:
+    ```json
+    {
+        "shippingAddress": "JS6740023 Chicago, USA"
+    }
+    ```
 
-          ```json
-          {
-              "id": 1,
-              "userId": 3,
-              "orderItems": [
-                  {
-                      "id": 1,
-                      "bookId": 5,
-                      "quantity": 2
-                  }
-              ],
-              "orderDate": "2023-10-15T12:02:51.316180965",
-              "total": 40.48,
-              "status": "PENDING"
-          }
-          ```
+- **Response**:
+    - **Status Code**: 200 OK
+    - **Response Body**:
 
-- **Get Order History**:
-    - **Endpoint**: `/orders`
-    - **Request**:
-        - **Method**: GET
+    ```json
+    {
+        "id": 1,
+        "userId": 3,
+        "orderItems": [
+            {
+                "id": 1,
+                "bookId": 5,
+                "quantity": 2
+            }
+        ],
+        "orderDate": "2023-10-15T12:02:51.316180965",
+        "total": 40.48,
+        "status": "PENDING"
+    }
+    ```
 
-    - **Response**:
-        - **Status Code**: 200 OK
-        - **Response Body**:
+</details>
 
-          ```json
-          [
-              {
-                  "id": 1,
-                  "userId": 3,
-                  "orderItems": [
-                      {
-                          "id": 1,
-                          "bookId": 5,
-                          "quantity": 2
-                      }
-                  ],
-                  "orderDate": "2023-10-15T12:02:51",
-                  "total": 40.48,
-                  "status": "CONFIRMED"
-              },
-              {
-                  "id": 2,
-                  "userId": 3,
-                  "orderItems": [
-                      {
-                          "id": 3,
-                          "bookId": 24,
-                          "quantity": 1
-                      }
-                  ],
-                  "orderDate": "2023-10-15T12:06:20",
-                  "total": 12.25,
-                  "status": "PENDING"
-              }
-          ]
-          ```
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold">Get Order History</summary>
 
-- **Get Specific Order Item**:
-    - **Endpoint**: `/orders/{order_id}/items/{order_item_id}`
-    - **Request**:
-        - **Method**: GET
+- **Endpoint**: `/orders`
+- **Request**:
+    - **Method**: GET
 
-    - **Response**:
-        - **Status Code**: 200 OK
-        - **Response Body**:
+- **Response**:
+    - **Status Code**: 200 OK
+    - **Response Body**:
 
-          ```json
-          {
-              "id": 1,
-              "bookId": 5,
-              "quantity": 2
-          }
-          ```
+    ```json
+    [
+        {
+            "id": 1,
+            "userId": 3,
+            "orderItems": [
+                {
+                    "id": 1,
+                    "bookId": 5,
+                    "quantity": 2
+                }
+            ],
+            "orderDate": "2023-10-15T12:02:51",
+            "total": 40.48,
+            "status": "CONFIRMED"
+        },
+        {
+            "id": 2,
+            "userId": 3,
+            "orderItems": [
+                {
+                    "id": 3,
+                    "bookId": 24,
+                    "quantity": 1
+                }
+            ],
+            "orderDate": "2023-10-15T12:06:20",
+            "total": 12.25,
+            "status": "PENDING"
+        }
+    ]
+    ```
 
-- **Get Order Items for Specific Order**:
-    - **Endpoint**: `/orders/{order_id}/items`
-    - **Request**:
-        - **Method**: GET
+</details>
 
-    - **Response**:
-        - **Status Code**: 200 OK
-        - **Response Body**:
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold">Get Specific Order Item</summary>
 
-          ```json
-          [
-              {
-                  "id": 1,
-                  "bookId": 5,
-                  "quantity": 2
-              },
-              {
-                  "id": 2,
-                  "bookId": 3,
-                  "quantity": 2
-              }
-          ]
-          ```
+- **Endpoint**: `/orders/{order_id}/items/{order_item_id}`
+- **Request**:
+    - **Method**: GET
 
-### Managers (Admin)
+- **Response**:
+    - **Status Code**: 200 OK
+    - **Response Body**:
 
-#### Book Management
+    ```json
+    {
+        "id": 1,
+        "bookId": 5,
+        "quantity": 2
+    }
+    ```
 
-- **Create a New Book**:
-    - **Endpoint**: `/books`
-    - **Request**:
-        - **Method**: POST
-        - **Request Body**:
+</details>
 
-          ```json
-          {
-            "title": "The Shinning",
-            "author": "Stephen King",
-            "isbn": "9780385121675",
-            "price": 29.99,
-            "description": "Jack and his family move into an isolated hotel with a violent past. Living in isolation, Jack begins to lose his sanity, which affects his family members",
-            "coverImage": "https://example.com/cover3.jpg",
-            "categories": [
-                "2", "1"
-            ]
-          }
-          ```
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold">Get Order Items for Specific Order</summary>
 
-    - **Response**:
-        - **Status Code**: 201 Created
-        - **Response Body**:
+- **Endpoint**: `/orders/{order_id}/items`
+- **Request**:
+    - **Method**: GET
 
-          ```json
-          {
-              "id": 32,
-              "title": "The Shinning",
-              "author": "Stephen King",
-              "isbn": "9780385121675",
-              "price": 29.99,
-              "description": "Jack and his family move into an isolated hotel with a violent past. Living in isolation, Jack begins to lose his sanity, which affects his family members",
-              "coverImage": "https://example.com/cover3.jpg",
-              "categories": [
-                  1,
-                  2
-              ]
-          }
-          ```
+- **Response**:
+    - **Status Code**: 200 OK
+    - **Response Body**:
 
-- **Update a Book**:
-    - **Endpoint**: `/books/{book_id}`
-    - **Request**:
-        - **Method**: PUT
-        - **Request Body**:
+    ```json
+    [
+        {
+            "id": 1,
+            "bookId": 5,
+            "quantity": 2
+        },
+        {
+            "id": 2,
+            "bookId": 3,
+            "quantity": 2
+        }
+    ]
+    ```
 
-          ```json
-          {
-            "title": "The Shinning",
-            "author": "Stephen King",
-            "isbn": "9780385121675",
-            "price": 29.99,
-            "description": "Jack and his family move into an isolated hotel with a violent past. Living in isolation, Jack begins to lose his sanity, which affects his family members",
-            "coverImage": "https://example.com/cover3.jpg",
-            "categories": [
-                "2"
-            ]
-          }
-          ```
+</details>
 
-    - **Response**:
-        - **Status Code**: 200 OK
-        - **Response Body**:
+#### Managers (Admin)
 
-          ```json
-          {
-              "id": 32,
-              "title": "The Shinning",
-              "author": "Stephen King",
-              "isbn": "9780385121675",
-              "price": 29.99,
-              "description": "Jack and his family move into an isolated hotel with a violent past. Living in isolation, Jack begins to lose his sanity, which affects his family members",
-              "coverImage": "https://example.com/cover3.jpg",
-              "categories": [
-                  2
-              ]
-          }
-          ```
+**Book Management**
 
-- **Delete a Book**:
-    - **Endpoint**: `/books/{book_id}`
-    - **Request**:
-        - **Method**: DELETE
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold">Create a New Book</summary>
 
-    - **Response**:
-        - **Status Code**: 204 No Content
+- **Endpoint**: `/books`
+- **Request**:
+    - **Method**: POST
+    - **Request Body**:
 
-#### Category Management
+    ```json
+    {
+      "title": "The Shining",
+      "author": "Stephen King",
+      "isbn": "9780385121675",
+      "price": 29.99,
+      "description": "Jack and his family move into an isolated hotel with a violent past. Living in isolation, Jack begins to lose his sanity, which affects his family members",
+      "coverImage": "https://example.com/cover3.jpg",
+      "categories": ["2", "1"]
+    }
+    ```
 
-- **Create a New Category**:
-    - **Endpoint**: `/categories`
-    - **Request**:
-        - **Method**: POST
-        - **Request Body**:
+- **Response**:
+    - **Status Code**: 201 Created
+    - **Response Body**:
 
-          ```json
-          {
-              "name": "Horror",
-              "description": "Horror book"
-          }
-          ```
+    ```json
+    {
+        "id": 32,
+        "title": "The Shining",
+        "author": "Stephen King",
+        "isbn": "9780385121675",
+        "price": 29.99,
+        "description": "Jack and his family move into an isolated hotel with a violent past. Living in isolation, Jack begins to lose his sanity, which affects his family members",
+        "coverImage": "https://example.com/cover3.jpg",
+        "categories": [1, 2]
+    }
+    ```
 
-    - **Response**:
-        - **Status Code**: 201 Created
-        - **Response Body**:
+</details>
 
-          ```json
-          {
-              "id": 29,
-              "name": "Horror",
-              "description": "Horror book"
-          }
-          ```
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold">Update a Book</summary>
 
-- **Update a Category**:
-    - **Endpoint**: `/categories/{category_id}`
-    - **Request**:
-        - **Method**: PUT
-        - **Request Body**:
+- **Endpoint**: `/books/{book_id}`
+- **Request**:
+    - **Method**: PUT
+    - **Request Body**:
 
-          ```json
-          {
-              "name": "Horror fiction",
-              "description": "Horror is a genre of fiction that is intended to disturb, frighten or scare"
-          }
-          ```
+    ```json
+    {
+      "title": "The Shining",
+      "author": "Stephen King",
+      "isbn": "9780385121675",
+      "price": 29.99,
+      "description": "Jack and his family move into an isolated hotel with a violent past. Living in isolation, Jack begins to lose his sanity, which affects his family members",
+      "coverImage": "https://example.com/cover3.jpg",
+      "categories": ["2"]
+    }
+    ```
 
-    - **Response**:
-        - **Status Code**: 200 OK
-        - **Response Body**:
+- **Response**:
+    - **Status Code**: 200 OK
+    - **Response Body**:
 
-          ```json
-          {
-              "id": 29,
-              "name": "Horror fiction",
-              "description": "Horror is a genre of fiction that is intended to disturb, frighten or scare"
-          }
-          ```
+    ```json
+    {
+        "id": 32,
+        "title": "The Shining",
+        "author": "Stephen King",
+        "isbn": "9780385121675",
+        "price": 29.99,
+        "description": "Jack and his family move into an isolated hotel with a violent past. Living in isolation, Jack begins to lose his sanity, which affects his family members",
+        "coverImage": "https://example.com/cover3.jpg",
+        "categories": [2]
+    }
+    ```
 
-- **Delete a Category**:
-    - **Endpoint**: `/categories/{category_id}`
-    - **Request**:
-        - **Method**: DELETE
+</details>
 
-    - **Response**:
-        - **Status Code**: 204 No Content
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold">Delete a Book</summary>
 
-#### Order Management
+- **Endpoint**: `/books/{book_id}`
+- **Request**:
+    - **Method**: DELETE
 
-- **Update Order Status**:
-    - **Endpoint**: `/orders/{order_id}`
-    - **Request**:
-        - **Method**: PATCH
-        - **Request Body**:
+- **Response**:
+    - **Status Code**: 204 No Content
 
-          ```json
-          {
-              "status": "CONFIRMED"
-          }
-          ```
+</details>
 
-    - **Response**:
-        - **Status Code**: 200 OK
-        - **Response Body**:
+**Category Management**
 
-          ```json
-          {
-              "id": 1,
-              "userId": 3,
-              "orderItems": [
-                  {
-                      "id": 2,
-                      "bookId": 3,
-                      "quantity": 2
-                  }
-              ],
-              "orderDate": "2023-10-15T12:02:51",
-              "total": 40.48,
-              "status": "CONFIRMED"
-          }
-          ```
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold">Create a New Category</summary>
+
+- **Endpoint**: `/categories`
+- **Request**:
+    - **Method**: POST
+    - **Request Body**:
+
+    ```json
+    {
+        "name": "Horror",
+        "description": "Horror book"
+    }
+    ```
+
+- **Response**:
+    - **Status Code**: 201 Created
+    - **Response Body**:
+
+    ```json
+    {
+        "id": 29,
+        "name": "Horror",
+        "description": "Horror book"
+    }
+    ```
+
+</details>
+
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold">Update a Category</summary>
+
+- **Endpoint**: `/categories/{category_id}`
+- **Request**:
+    - **Method**: PUT
+    - **Request Body**:
+
+    ```json
+    {
+        "name": "Horror fiction",
+        "description": "Horror is a genre of fiction that is intended to disturb, frighten or scare"
+    }
+    ```
+
+- **Response**:
+    - **Status Code**: 200 OK
+    - **Response Body**:
+
+    ```json
+    {
+        "id": 29,
+        "name": "Horror fiction",
+        "description": "Horror is a genre of fiction that is intended to disturb, frighten or scare"
+    }
+    ```
+
+</details>
+
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold">Delete a Category</summary>
+
+- **Endpoint**: `/categories/{category_id}`
+- **Request**:
+    - **Method**: DELETE
+
+- **Response**:
+    - **Status Code**: 204 No Content
+
+</details>
+
+**Order Management**
+
+<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
+  <summary style="font-weight: bold">Update Order Status</summary>
+
+- **Endpoint**: `/orders/{order_id}`
+- **Request**:
+    - **Method**: PATCH
+    - **Request Body**:
+
+    ```json
+    {
+        "status": "CONFIRMED"
+    }
+    ```
+
+- **Response**:
+    - **Status Code**: 200 OK
+    - **Response Body**:
+
+    ```json
+    {
+        "id": 1,
+        "userId": 3,
+        "orderItems": [
+            {
+                "id": 2,
+                "bookId": 3,
+                "quantity": 2
+            }
+        ],
+        "orderDate": "2023-10-15T12:02:51",
+        "total": 40.48,
+        "status": "CONFIRMED"
+    }
+    ```
+
+</details>
 
 ## Setup and Usage
 
