@@ -20,7 +20,7 @@ tools for managers to organize and monitor the store.
 
 ## Video Presentation
 
-[![https://youtu.be/je94b48P8GA?si=BjrNyUUWF0zb-knZ](https://i9.ytimg.com/vi_webp/je94b48P8GA/mqdefault.webp?v=652d730a&sqp=CJjmtakG&rs=AOn4CLDAZCjKZZoz_97kL654fksEg1RhmQ)](https://youtu.be/je94b48P8GA?si=BjrNyUUWF0zb-knZ)
+[![https://youtu.be/je94b48P8GA?si=BjrNyUUWF0zb-knZ](https://img.youtube.com/vi/je94b48P8GA/0.jpg)](https://youtu.be/je94b48P8GA?si=BjrNyUUWF0zb-knZ)
 
 ## Functionalities
 
