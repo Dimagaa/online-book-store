@@ -31,8 +31,8 @@ tools for managers to organize and monitor the store.
 The API uses token-based authentication. You must obtain a JSON Web Token (JWT) and include it in the Authorization
 header for protected routes.
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold"> Login</summary>
+<details>
+  <summary> Login</summary>
 
 - **Endpoint**: `/auth/login`
 
@@ -59,8 +59,8 @@ header for protected routes.
 
 </details>
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold"> Register</summary>
+<details>
+  <summary> Register</summary>
 
 - **Register**:
     - **Endpoint**: `/auth/register`
@@ -97,8 +97,8 @@ header for protected routes.
 
 #### Browsing Books and Categories
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold"> Browse All Books</summary>
+<details>
+  <summary> Browse All Books</summary>
 
 - **Endpoint**: `/books`
     - **Request**:
@@ -139,8 +139,8 @@ header for protected routes.
 
 </details>
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold"> View Book Details</summary>
+<details>
+  <summary> View Book Details</summary>
 
 - **Endpoint**: `/books/{id}`
 - **Request**:
@@ -165,8 +165,8 @@ header for protected routes.
 
 </details>
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold"> Search for Books</summary>
+<details>
+  <summary> Search for Books</summary>
 
 - **Endpoint**: `/books/search?title={title}&author={author}&isbn={isbn}`
 - **Request**:
@@ -185,8 +185,8 @@ header for protected routes.
 
 </details>
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold"> Browse Bookshelf Sections</summary>
+<details>
+  <summary> Browse Bookshelf Sections</summary>
 
 - **Endpoint**: `/categories`
 - **Request**:
@@ -217,8 +217,8 @@ header for protected routes.
 
 </details>
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold">Get Category by ID</summary>
+<details>
+  <summary>Get Category by ID</summary>
 
 - **Endpoint**: `/categories/{id}`
 - **Request**:
@@ -238,8 +238,8 @@ header for protected routes.
 
 </details>
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold">Get Books by Category ID</summary>
+<details>
+  <summary>Get Books by Category ID</summary>
 
 - **Endpoint**: `/categories/{id}/books`
 - **Request**:
@@ -253,8 +253,8 @@ header for protected routes.
 
 #### Shopping Cart
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold">Add New Cart Item</summary>
+<details>
+  <summary>Add New Cart Item</summary>
 
 - **Endpoint**: `/cart`
 - **Request**:
@@ -283,8 +283,8 @@ header for protected routes.
 
 </details>
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold">Update Cart Item</summary>
+<details>
+  <summary>Update Cart Item</summary>
 
 - **Endpoint**: `/cart/cart-items/{id}`
 - **Request**:
@@ -312,8 +312,8 @@ header for protected routes.
 
 </details>
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold">Delete Cart Item</summary>
+<details>
+  <summary>Delete Cart Item</summary>
 
 - **Endpoint**: `/cart-items/{id}`
 - **Request**:
@@ -324,8 +324,8 @@ header for protected routes.
 
 </details>
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold">Get Shopping Cart</summary>
+<details>
+  <summary>Get Shopping Cart</summary>
 
 - **Endpoint**: `/cart`
 - **Request**:
@@ -360,8 +360,8 @@ header for protected routes.
 
 #### Order
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold">Place an Order</summary>
+<details>
+  <summary>Place an Order</summary>
 
 - **Endpoint**: `/orders`
 - **Request**:
@@ -397,8 +397,8 @@ header for protected routes.
 
 </details>
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold">Get Order History</summary>
+<details>
+  <summary>Get Order History</summary>
 
 - **Endpoint**: `/orders`
 - **Request**:
@@ -443,8 +443,8 @@ header for protected routes.
 
 </details>
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold">Get Specific Order Item</summary>
+<details>
+  <summary>Get Specific Order Item</summary>
 
 - **Endpoint**: `/orders/{order_id}/items/{order_item_id}`
 - **Request**:
@@ -464,8 +464,8 @@ header for protected routes.
 
 </details>
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold">Get Order Items for Specific Order</summary>
+<details>
+  <summary>Get Order Items for Specific Order</summary>
 
 - **Endpoint**: `/orders/{order_id}/items`
 - **Request**:
@@ -496,8 +496,8 @@ header for protected routes.
 
 **Book Management**
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold">Create a New Book</summary>
+<details>
+  <summary>Create a New Book</summary>
 
 - **Endpoint**: `/books`
 - **Request**:
@@ -535,8 +535,8 @@ header for protected routes.
 
 </details>
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold">Update a Book</summary>
+<details>
+  <summary>Update a Book</summary>
 
 - **Endpoint**: `/books/{book_id}`
 - **Request**:
@@ -574,8 +574,8 @@ header for protected routes.
 
 </details>
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold">Delete a Book</summary>
+<details>
+  <summary>Delete a Book</summary>
 
 - **Endpoint**: `/books/{book_id}`
 - **Request**:
@@ -588,8 +588,8 @@ header for protected routes.
 
 **Category Management**
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold">Create a New Category</summary>
+<details>
+  <summary>Create a New Category</summary>
 
 - **Endpoint**: `/categories`
 - **Request**:
@@ -617,8 +617,8 @@ header for protected routes.
 
 </details>
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold">Update a Category</summary>
+<details>
+  <summary>Update a Category</summary>
 
 - **Endpoint**: `/categories/{category_id}`
 - **Request**:
@@ -646,8 +646,8 @@ header for protected routes.
 
 </details>
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold">Delete a Category</summary>
+<details>
+  <summary>Delete a Category</summary>
 
 - **Endpoint**: `/categories/{category_id}`
 - **Request**:
@@ -660,8 +660,8 @@ header for protected routes.
 
 **Order Management**
 
-<details style="border: 1px solid #AAAAAA2D;border-radius: 0.3rem;padding: 0.5rem;background: rgba(217,204,56,0.04)">
-  <summary style="font-weight: bold">Update Order Status</summary>
+<details>
+  <summary>Update Order Status</summary>
 
 - **Endpoint**: `/orders/{order_id}`
 - **Request**:
@@ -808,4 +808,5 @@ project.
 
 We welcome contributions from the community to help enhance and improve the Online Book Store project. Whether you're
 interested in fixing bugs, adding new features, or improving documentation, your contributions are valuable.
+
 ---
