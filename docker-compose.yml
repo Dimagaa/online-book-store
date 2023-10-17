@@ -12,7 +12,7 @@ services:
       SPRING_DATASOURCE_USERNAME: $MYSQL_USER
       SPRING_DATASOURCE_PASSWORD: $MYSQL_PASSWORD
       JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$DEBUG_PORT
-      SPRING_PROFILES_ACTIVE: $SPRING_PROFILES_ACTIVE
+      SPRING.LIQUIBASE.LABEL-FILTER: $GENERATE_DATA
     ports:
       - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
       - $DEBUG_PORT
@@ -20,7 +20,6 @@ services:
   mysqlserver:
     image: mysql
     restart: on-failure
-    env_file: ./.env
     ports:
       - $MYSQL_LOCAL_PORT:$MYSQL_DOCKER_PORT
     environment:
