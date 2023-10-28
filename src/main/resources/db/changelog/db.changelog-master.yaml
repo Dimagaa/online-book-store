@@ -25,5 +25,3 @@ databaseChangeLog:
       file: db/changelog/changes/12-insert-super-admin.yaml
   - include:
       file: db/changelog/demos/01-insert-demo-data.yaml
-  - include:
-      file: db/changelog/changes/12-insert-super-admin.yaml

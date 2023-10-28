@@ -1,0 +1,36 @@
+  name: Deploy to ECR
+
+  on:
+
+    push:
+      branches: [main]
+
+  jobs:
+    build:
+      name: Build Image
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Check out code
+          uses: actions/checkout@v2
+
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            role-to-assume: arn:aws:iam::410123344539:role/github
+            role-session-name: GitHub_OnlineBookStore_Repository_Session
+            aws-region: eu-north-1
+
+        - name: Login to Amazon ECR
+          id: login-ecr
+          uses: aws-actions/amazon-ecr-login@v1
+
+        - name: Build and push image to ECR
+          env:
+            ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            ECR_REPOSITORY: online-book-store
+            IMAGE_TAG: online-book-store:latest public.ecr.aws/w5z6u3w9/online-book-store:latest
+          run: |
+            docker build -t online-book-store .
+            docker tag online-book-store:latest public.ecr.aws/w5z6u3w9/online-book-store:latest
+            docker push public.ecr.aws/w5z6u3w9/online-book-store:latest
