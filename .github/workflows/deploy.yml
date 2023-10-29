@@ -3,7 +3,7 @@ name: Deploy to ECR
 on: [ workflow_dispatch ]
 
 env:
-  AWS_REGION: eu-north-1
+  AWS_REGION: us-east-1
   ECR_REPOSITORY: online-book-store
   CONTAINER_NAME: online-book-store
 
