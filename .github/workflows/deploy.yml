@@ -34,7 +34,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::410123344539:role/github-book-store-repository
           role-session-name: Github_push_session
-          aws-region: $AWS_REGION
+          aws-region: us-east-1
 
       - name: Login to Amazon ECR
         id: login-ecr
