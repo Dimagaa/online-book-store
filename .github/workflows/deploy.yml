@@ -4,8 +4,7 @@ on: [ workflow_dispatch ]
 
 env:
   AWS_REGION: us-east-1
-  ECR_REPOSITORY: online-book-store
-  CONTAINER_NAME: online-book-store
+  AWS_ASSUME_ROLE: arn:aws:iam::410123344539:role/github-book-store-repository
 
 permissions:
   id-token: write
@@ -18,7 +17,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up JDK 17
         uses: actions/setup-java@v2
@@ -28,26 +27,27 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots verify -Dmaven.test.skip=true
+        run: mvn --batch-mode --update-snapshots verify
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::410123344539:role/github-book-store-repository
+          role-to-assume: ${{ env.AWS_ASSUME_ROLE}}
           role-session-name: Github_push_session
-          aws-region: us-east-1
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
         with:
           registry-type: public
-        
+
       - name: Build and push image to ECR
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REGISTRY_ALIAS: w5z6u3w9
+          REPOSITORY: online-book-store
           IMAGE_TAG: latest
         run: |
-          docker build -t online-book-store .
-          docker tag online-book-store:latest public.ecr.aws/w5z6u3w9/online-book-store:latest
-          docker push public.ecr.aws/w5z6u3w9/online-book-store:latest
+          docker build -t $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
