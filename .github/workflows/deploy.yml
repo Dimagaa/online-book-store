@@ -8,6 +8,7 @@ env:
   CONTAINER_NAME: online-book-store
 
 permissions:
+  id-token: write
   contents: read
 
 jobs:
